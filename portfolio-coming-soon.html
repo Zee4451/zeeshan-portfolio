@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Portfolio Coming Soon | Zeeshan Khan</title>
+    <meta name="description" content="Zeeshan Khan's full-stack portfolio is coming soon. Stay tuned for amazing projects!" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@900&amp;family=JetBrains+Mono:wght@700&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "primary": "#FACC15",
+                            "accent-pink": "#F472B6",
+                            "accent-blue": "#3B82F6",
+                            "background": "#FACC15",
+                            "on-background": "#000000"
+                        },
+                        "borderRadius": {
+                            "none": "0",
+                            "sm": "2px"
+                        },
+                        "boxShadow": {
+                            "brutal": "4px 4px 0px 0px rgba(0,0,0,1)",
+                            "brutal-lg": "8px 8px 0px 0px rgba(0,0,0,1)"
+                        },
+                        "fontFamily": {
+                            "display": ["Inter", "sans-serif"],
+                            "mono": ["JetBrains Mono", "monospace"]
+                        }
+                    },
+                },
+            }
+        } catch (_e) { }
+    </script>
+    <style>
+        .heavy-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            line-height: 0.9;
+        }
+
+        .neubrutal-card {
+            border: 4px solid black;
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            transition: all 0.1s;
+        }
+
+        .neubrutal-card:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+        }
+
+        .sticker-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            border: 2px solid black;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            background: white;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+            text-transform: uppercase;
+        }
+
+        .sticker-blue {
+            background: #3B82F6;
+            color: white;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1); }
+            50% { box-shadow: 6px 6px 0px 0px rgba(244, 114, 182, 0.5); }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-primary selection:bg-accent-pink selection:text-white antialiased min-h-screen">
+    <main class="relative z-10 max-w-[640px] mx-auto px-6 py-20 flex flex-col items-center justify-center min-h-screen">
+        <!-- Main Content -->
+        <div class="text-center">
+            <div class="float-animation mb-8">
+                <div class="neubrutal-card pulse-glow w-32 h-32 mx-auto bg-white flex items-center justify-center">
+                    <span class="material-symbols-outlined text-6xl text-black">construction</span>
+                </div>
+            </div>
+
+            <h1 class="heavy-text text-5xl sm:text-7xl md:text-8xl text-black mb-6">
+                COMING<br/>SOON
+            </h1>
+
+            <div class="neubrutal-card bg-white p-6 mb-8 max-w-md mx-auto">
+                <p class="font-mono text-sm md:text-base font-bold text-black mb-4">
+                    My full-stack portfolio is under construction. Building something epic with React, Node.js & MongoDB.
+                </p>
+                <div class="flex gap-2 flex-wrap justify-center">
+                    <span class="sticker-label">REACT.JS</span>
+                    <span class="sticker-label sticker-blue">NODE.JS</span>
+                    <span class="sticker-label">EXPRESS.JS</span>
+                    <span class="sticker-label sticker-blue">MONGODB</span>
+                </div>
+            </div>
+
+            <div class="space-y-4 max-w-md mx-auto">
+                <a href="index.html" class="neubrutal-card block p-4 bg-accent-blue text-white hover:bg-white hover:text-black transition-colors text-center">
+                    <span class="font-mono font-bold text-sm uppercase">← Back to Linktree</span>
+                </a>
+                
+                <a href="https://github.com/Zee4451" target="_blank" rel="noopener noreferrer" class="neubrutal-card block p-4 bg-black text-primary hover:bg-accent-pink hover:text-white transition-colors text-center">
+                    <span class="material-symbols-outlined text-xl align-middle mr-2">code</span>
+                    <span class="font-mono font-bold text-sm uppercase">Check My GitHub</span>
+                </a>
+            </div>
+
+            <div class="mt-12">
+                <p class="font-mono text-xs text-black/60 italic">
+                    Want to connect? Reach out at <a href="mailto:abzeeshankhan30@gmail.com" class="underline hover:text-accent-blue">abzeeshankhan30@gmail.com</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.querySelectorAll('.neubrutal-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'translate(4px, 4px)';
+                card.style.boxShadow = '2px 2px 0px 0px rgba(0,0,0,1)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            });
+        });
+    </script>
+</body>
+
+</html>
