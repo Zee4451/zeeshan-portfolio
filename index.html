@@ -32,13 +32,7 @@
                             "accent-pink": "#F472B6", // Hot Pink
                             "accent-blue": "#3B82F6", // Electric Blue
                             "background": "#FACC15",
-                            "on-background": "#000000",
-                            "dark": {
-                                "bg": "#1a1a1a",
-                                "card": "#2d2d2d",
-                                "text": "#ffffff",
-                                "border": "#404040"
-                            }
+                            "on-background": "#000000"
                         },
                         "borderRadius": {
                             "none": "0",
@@ -117,52 +111,6 @@
             100% {
                 transform: translateX(-50%);
             }
-        }
-
-        .dark body {
-            background-color: #1a1a1a;
-        }
-
-        .dark .bg-primary {
-            background-color: #1a1a1a;
-        }
-
-        .dark .bg-white {
-            background-color: #2d2d2d;
-        }
-
-        .dark .text-black {
-            color: #ffffff;
-        }
-
-        .dark .border-black {
-            border-color: #404040;
-        }
-
-        .dark .shadow-brutal,
-        .dark .neubrutal-card {
-            box-shadow: 6px 6px 0px 0px rgba(255, 255, 255, 0.2);
-        }
-
-        .dark .neubrutal-card:active {
-            box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.2);
-        }
-
-        .dark .marquee-container {
-            background: #2d2d2d;
-            color: #FACC15;
-            border-bottom: 2px solid #404040;
-        }
-
-        .dark .sticker-label {
-            background: #2d2d2d;
-            color: #ffffff;
-            border-color: #404040;
-        }
-
-        .dark .sticker-blue {
-            background: #3B82F6;
-            color: white;
         }
     </style>
 </head>
@@ -344,11 +292,6 @@
             class="neubrutal-card p-4 bg-white hover:bg-accent-pink transition-colors focus:outline-none"
             title="Email Zeeshan">
             <span class="material-symbols-outlined font-bold text-2xl block">alternate_email</span>
-        </button>
-        <button id="btn-dark-mode"
-            class="neubrutal-card p-4 bg-white hover:bg-black hover:text-primary transition-colors focus:outline-none"
-            title="Toggle Dark Mode">
-            <span class="material-symbols-outlined font-bold text-2xl block">dark_mode</span>
         </button>
     </nav>
 
@@ -669,24 +612,6 @@
                 if (!emailModal.classList.contains('hidden')) closeEmailModal();
                 if (!inquiryModal.classList.contains('hidden')) closeInquiryModal();
             }
-        });
-
-        // Dark Mode Toggle
-        const btnDarkMode = document.getElementById('btn-dark-mode');
-        const html = document.documentElement;
-
-        // Check for saved theme preference or default to light
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            html.classList.add('dark');
-            btnDarkMode.querySelector('span').textContent = 'light_mode';
-        }
-
-        btnDarkMode.addEventListener('click', () => {
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            btnDarkMode.querySelector('span').textContent = isDark ? 'light_mode' : 'dark_mode';
         });
 
         function escapeHtml(str) {
