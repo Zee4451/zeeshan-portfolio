@@ -119,15 +119,16 @@
     <!-- Top Ticker Bar -->
     <div class="fixed top-0 w-full z-50 marquee-container">
         <div class="marquee-content font-mono text-xs md:text-sm tracking-tighter">
-            BUILDING THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 // BUILDING
-            THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 //
+            BUILDING THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 // 01011010 01000101 01000101 01010011 01001000 01000001 01001110 // BUILDING
+            THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 // ...---... // ...- // ... // ...- // .... // .- // -. // 01011010 01000101 01000101 01010011 01001000 01000001 01001110 //
         </div>
     </div>
     <main class="relative z-10 max-w-[640px] mx-auto px-6 pt-24 pb-52">
         <!-- Profile Header (Asymmetric) -->
         <header class="relative mb-20 flex flex-col items-start pt-4">
             <div
-                class="relative w-36 h-36 sm:w-44 sm:h-44 border-4 border-black shadow-brutal bg-white overflow-hidden -rotate-3 hover:rotate-0 transition-transform mb-8">
+                id="profile-image"
+                class="relative w-36 h-36 sm:w-44 sm:h-44 border-4 border-black shadow-brutal bg-white overflow-hidden -rotate-3 hover:rotate-0 transition-transform mb-8 cursor-pointer">
                 <img alt="Zeeshan Khan" class="w-full h-full object-cover grayscale contrast-125"
                     src="zeeshan-profile.png" />
             </div>
@@ -144,10 +145,15 @@
                 <p class="font-mono text-[11px] sm:text-sm text-black/70 mb-4 italic">I build fast, beautiful web apps
                     from Indore 🇮🇳</p>
                 <div class="flex gap-2 flex-wrap">
-                    <span class="sticker-label">REACT.JS</span>
-                    <span class="sticker-label sticker-blue">NODE.JS</span>
-                    <span class="sticker-label">EXPRESS.JS</span>
-                    <span class="sticker-label sticker-blue">MONGODB</span>
+                    <span class="sticker-label code-snippet" data-code="const App = () => <div>Hello World</div>;">REACT.JS</span>
+                    <span class="sticker-label sticker-blue code-snippet" data-code="const server = http.createServer((req, res) => { res.end('Hello'); });">NODE.JS</span>
+                    <span class="sticker-label code-snippet" data-code="app.get('/api', (req, res) => res.json({ msg: 'Hello' }));">EXPRESS.JS</span>
+                    <span class="sticker-label sticker-blue code-snippet" data-code="db.users.findOne({ name: 'Zeeshan' });">MONGODB</span>
+                </div>
+
+                <!-- Code Snippet Tooltip -->
+                <div id="code-tooltip" class="hidden fixed bg-black text-green-400 font-mono text-xs p-3 rounded border-2 border-green-500 shadow-lg z-50 max-w-xs">
+                    <pre id="code-content" class="whitespace-pre-wrap"></pre>
                 </div>
                 <!-- Social Media Links -->
                 <div class="flex gap-3 mt-5 flex-wrap">
@@ -295,6 +301,13 @@
         </button>
     </nav>
 
+    <!-- Sound Toggle Button (Fixed Top Right) -->
+    <button id="btn-sound"
+        class="fixed top-4 right-4 neubrutal-card p-3 bg-white hover:bg-accent-blue hover:text-white transition-colors focus:outline-none z-50"
+        title="Toggle Sound Effects">
+        <span class="material-symbols-outlined font-bold text-xl block">volume_off</span>
+    </button>
+
     <!-- Terminal Drawer Modal -->
     <div id="terminal-modal"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
@@ -411,11 +424,96 @@
     </div>
 
     <script>
+        // Console easter egg for developers
+        console.log('%c👋 Hey there, fellow developer!', 'font-size: 20px; font-weight: bold; color: #FACC15; background: #000; padding: 10px;');
+        console.log('%cYou found the secret console! 🎉', 'font-size: 14px; color: #3B82F6;');
+        console.log('%cWant to collaborate? Reach out at abzeeshankhan30@gmail.com', 'font-size: 12px; color: #666;');
+        console.log('%cCheck out my GitHub: https://github.com/Zee4451', 'font-size: 12px; color: #666;');
+        console.log('%c⚡ Fun fact: This page was built with pure HTML, Tailwind CSS, and vanilla JavaScript', 'font-size: 12px; color: #F472B6;');
+        console.log('%c─────────────────────────────────────', 'font-size: 12px; color: #ccc;');
+        console.log('%cP.S. Try triple-clicking my profile image for a surprise! 🖱️', 'font-size: 12px; color: #22c55e; font-style: italic;');
+
+        // Sound Effects System using Web Audio API
+        let audioContext = null;
+        let soundEnabled = localStorage.getItem('soundEnabled') === 'true';
+
+        const btnSound = document.getElementById('btn-sound');
+        const soundIcon = btnSound.querySelector('span');
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playClickSound() {
+            if (!soundEnabled) return;
+            
+            initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        function playHoverSound() {
+            if (!soundEnabled) return;
+            
+            initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.05);
+            
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.05);
+        }
+
+        // Update sound button icon based on state
+        function updateSoundButton() {
+            soundIcon.textContent = soundEnabled ? 'volume_up' : 'volume_off';
+        }
+
+        // Initialize sound button state
+        updateSoundButton();
+
+        // Sound toggle functionality
+        btnSound.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            updateSoundButton();
+            
+            if (soundEnabled) {
+                initAudio();
+                playClickSound();
+            }
+        });
+
         // Micro-interactions for tactile feel on all cards and buttons
         document.querySelectorAll('.neubrutal-card').forEach(card => {
             card.addEventListener('mousedown', () => {
                 card.style.transform = 'translate(4px, 4px)';
                 card.style.boxShadow = '2px 2px 0px 0px rgba(0,0,0,1)';
+                playClickSound();
             });
             card.addEventListener('mouseup', () => {
                 card.style.transform = '';
@@ -424,6 +522,9 @@
             card.addEventListener('mouseleave', () => {
                 card.style.transform = '';
                 card.style.boxShadow = '';
+            });
+            card.addEventListener('mouseenter', () => {
+                playHoverSound();
             });
         });
 
@@ -605,6 +706,27 @@
             }
         });
 
+        // Code Snippet Hover Effect
+        const codeSnippets = document.querySelectorAll('.code-snippet');
+        const codeTooltip = document.getElementById('code-tooltip');
+        const codeContent = document.getElementById('code-content');
+
+        codeSnippets.forEach(snippet => {
+            snippet.addEventListener('mouseenter', (e) => {
+                const code = snippet.getAttribute('data-code');
+                codeContent.textContent = code;
+                codeTooltip.classList.remove('hidden');
+                
+                const rect = snippet.getBoundingClientRect();
+                codeTooltip.style.left = rect.left + 'px';
+                codeTooltip.style.top = (rect.bottom + 10) + 'px';
+            });
+
+            snippet.addEventListener('mouseleave', () => {
+                codeTooltip.classList.add('hidden');
+            });
+        });
+
         // Escape key closes all modals
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -613,6 +735,48 @@
                 if (!inquiryModal.classList.contains('hidden')) closeInquiryModal();
             }
         });
+
+        // Triple-click easter egg on profile image
+        const profileImage = document.getElementById('profile-image');
+        let clickCount = 0;
+        let clickTimer;
+
+        profileImage.addEventListener('click', () => {
+            clickCount++;
+            
+            clearTimeout(clickTimer);
+            
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 500);
+
+            if (clickCount === 3) {
+                clickCount = 0;
+                showHiddenBio();
+            }
+        });
+
+        function showHiddenBio() {
+            const hiddenFacts = [
+                "🎮 Fun fact: I've debugged code at 3 AM more times than I'd like to admit!",
+                "☕ Coffee-powered developer: 5 cups a day keeps the bugs away!",
+                "🚀 Secret: My first project was a broken calculator - still proud of it!",
+                "💡 I believe clean code is like poetry - sometimes it rhymes!",
+                "🔥 Hot take: Tabs > Spaces (don't @ me)",
+                "⚡ I once fixed a production bug with a single semicolon. True story!"
+            ];
+            
+            const randomFact = hiddenFacts[Math.floor(Math.random() * hiddenFacts.length)];
+            
+            toast.innerText = randomFact;
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+            }, 4000);
+        }
 
         function escapeHtml(str) {
             const div = document.createElement('div');
@@ -653,7 +817,8 @@
                         '  <span class="text-yellow-400">projects</span> - View project highlights<br>' +
                         '  <span class="text-yellow-400">social</span>   - View social media links<br>' +
                         '  <span class="text-yellow-400">clear</span>    - Clear the screen<br>' +
-                        '  <span class="text-yellow-400">exit</span>     - Close the terminal session');
+                        '  <span class="text-yellow-400">exit</span>     - Close the terminal session<br>' +
+                        '  <span class="text-green-400">[HIDDEN]</span>  - Try: sudo, matrix, hack, easter, date, whoami');
                     break;
                 case 'about':
                     printLine('Zeeshan Khan is a Junior Full-Stack Developer with 1.5+ years of experience building modern web applications. Passionate about highly interactive and clean interfaces.');
@@ -683,6 +848,33 @@
                     break;
                 case 'exit':
                     closeTerminal();
+                    break;
+                case 'sudo':
+                    printLine('Nice try! But you already have root access in this terminal. 🎩', 'success');
+                    break;
+                case 'matrix':
+                    printLine('Wake up, Neo... The Matrix has you... 🐇', 'success');
+                    printLine('████████████████████████████████████████████', 'success');
+                    printLine('█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█', 'success');
+                    printLine('█░█▀█░█░█░█▀▀░█▀█░█▀█░█▀▀░█░█░█▀▀░█░█░█', 'success');
+                    printLine('█░█▀█░█░█░█▀▀░█▀█░█▀█░█▀▀░█░█░█▀▀░█░█░█', 'success');
+                    printLine('█░▀░▀░▀▀▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀', 'success');
+                    printLine('████████████████████████████████████████████', 'success');
+                    break;
+                case 'hack':
+                    printLine('🔓 INITIATING HACK SEQUENCE...', 'success');
+                    setTimeout(() => printLine('⚡ Bypassing firewall... [████████░░] 80%', 'success'), 500);
+                    setTimeout(() => printLine('💀 Accessing mainframe... [██████████] 100%', 'success'), 1000);
+                    setTimeout(() => printLine('🎉 HACK COMPLETE! Just kidding, this is a portfolio site 😄', 'success'), 1500);
+                    break;
+                case 'easter':
+                    printLine('🥚 You found an easter egg! Here\'s a secret: I code better after coffee ☕', 'success');
+                    break;
+                case 'date':
+                    printLine(`Current date: ${new Date().toLocaleDateString()}`, 'success');
+                    break;
+                case 'whoami':
+                    printLine('You are a curious developer exploring Zeeshan\'s portfolio. Welcome! 👋', 'success');
                     break;
                 default:
                     printLine(`Command not found: ${escapeHtml(cmd)}. Type <span class="text-yellow-400">help</span> for a list of commands.`, 'error');
