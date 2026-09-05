@@ -405,20 +405,20 @@
 
     <!-- Interactive Draggable Neubrutalist Stickers -->
     <div id="stickers-container">
-        <div class="draggable-sticker sticker-label bg-accent-pink text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[-6deg] text-xs sm:text-sm tracking-wide"
-            style="top: 76px; left: 16px; --rot: -6deg;" title="Drag me anywhere!">
+        <div class="draggable-sticker sticker-label bg-accent-pink text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide"
+            data-init-top="76" data-init-left="16" data-rot="-6" title="Drag me anywhere!">
             <span>⚡ MERN STACK</span>
         </div>
-        <div class="draggable-sticker sticker-label bg-accent-blue text-white font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[8deg] text-xs sm:text-sm tracking-wide"
-            style="top: 130px; right: 20px; --rot: 8deg;" title="Drag me anywhere!">
+        <div class="draggable-sticker sticker-label bg-accent-blue text-white font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide"
+            data-init-top="130" data-init-right="20" data-rot="8" title="Drag me anywhere!">
             <span>🚀 OPEN TO WORK</span>
         </div>
-        <div class="draggable-sticker sticker-label bg-white text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[-4deg] text-xs sm:text-sm tracking-wide"
-            style="bottom: 120px; left: 18px; --rot: -4deg;" title="Drag me anywhere!">
+        <div class="draggable-sticker sticker-label bg-white text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide"
+            data-init-bottom="120" data-init-left="18" data-rot="-4" title="Drag me anywhere!">
             <span>📍 INDORE, MP</span>
         </div>
-        <div class="draggable-sticker sticker-label bg-[#22c55e] text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[5deg] text-xs sm:text-sm tracking-wide hidden sm:block"
-            style="bottom: 150px; right: 24px; --rot: 5deg;" title="Drag me anywhere!">
+        <div class="draggable-sticker sticker-label bg-[#22c55e] text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide hidden sm:block"
+            data-init-bottom="150" data-init-right="24" data-rot="5" title="Drag me anywhere!">
             <span>☕ 100% CAFFEINE</span>
         </div>
     </div>
@@ -712,222 +712,227 @@
             gainNode.gain.setValueAtTime(vol, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.12);
 
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.12);
-        }
-
-        // Comic Starburst SVG Pop Effect (Hardware-Accelerated Positioning)
-        function spawnImpactEffect(x, y) {
-            const burst = document.createElement('div');
-            burst.className = 'comic-impact-burst';
-            burst.style.setProperty('--burst-transform', `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`);
-
-            // High-fidelity comic starburst matching user reference image
-            burst.innerHTML = `
-                <svg width="110" height="110" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
-                    <!-- Outer comic speed lines / dots -->
-                    <circle cx="20" cy="22" r="2.5" fill="black" />
-                    <circle cx="102" cy="18" r="2" fill="black" />
-                    <circle cx="108" cy="92" r="3" fill="black" />
-                    <circle cx="14" cy="78" r="2" fill="black" />
-                    <circle cx="95" cy="40" r="1.5" fill="black" />
-                    <line x1="12" y1="12" x2="28" y2="28" stroke="black" stroke-width="3" stroke-linecap="round" />
-                    <line x1="108" y1="14" x2="94" y2="28" stroke="black" stroke-width="3" stroke-linecap="round" />
-                    <line x1="8" y1="105" x2="26" y2="92" stroke="black" stroke-width="3.5" stroke-linecap="round" />
-                    <line x1="112" y1="108" x2="96" y2="94" stroke="black" stroke-width="3" stroke-linecap="round" />
-                    
-                    <!-- Comic Black Halftone Shadow Starburst -->
-                    <path d="M60 4 L68 28 L94 12 L84 37 L114 34 L93 54 L118 72 L92 78 L104 104 L78 94 L72 118 L58 95 L40 114 L44 88 L18 100 L28 76 L4 68 L26 52 L6 32 L34 36 L30 10 L52 26 Z" 
-                          fill="black" transform="translate(3, 4)" />
-
-                    <!-- Yellow Comic Spiky Flash Starburst -->
-                    <path d="M60 4 L68 28 L94 12 L84 37 L114 34 L93 54 L118 72 L92 78 L104 104 L78 94 L72 118 L58 95 L40 114 L44 88 L18 100 L28 76 L4 68 L26 52 L6 32 L34 36 L30 10 L52 26 Z" 
-                          fill="#FACC15" stroke="black" stroke-width="4.5" stroke-linejoin="round" />
-
-                    <!-- Inner White/Bright Flash Center -->
-                    <path d="M60 22 L65 39 L83 28 L76 45 L97 43 L83 56 L100 69 L82 73 L90 92 L72 85 L67 102 L57 86 L43 99 L46 80 L27 89 L35 71 L17 65 L33 54 L19 40 L39 43 L37 25 L53 37 Z" 
-                          fill="#FEF08A" opacity="0.8" />
-                </svg>
-            `;
-
-            document.body.appendChild(burst);
-
-            setTimeout(() => {
-                burst.remove();
-            }, 420);
-        }
-
-        function playHoverSound() {
-            if (!soundEnabled) return;
-
-            initAudio();
-
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.05);
-
-            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.05);
-        }
-
-        // Update sound button icon based on state
-        function updateSoundButton() {
-            soundIcon.textContent = soundEnabled ? 'volume_up' : 'volume_off';
-        }
-
-        // Initialize sound button state
-        updateSoundButton();
-
-        // Sound toggle functionality
-        btnSound.addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            localStorage.setItem('soundEnabled', soundEnabled);
-            updateSoundButton();
-
-            if (soundEnabled) {
-                initAudio();
-                playClickSound();
-            }
-        });
-
-        // Toast Notification helper
-        const toast = document.getElementById('toast');
-
-        // ============================================================
+                    // ============================================================
         // ULTRA-PERFORMANT 60FPS GPU STICKER ENGINE (MOBILE & DESKTOP)
         // ============================================================
         let topZIndex = 60;
         const stickers = [];
         let isPhysicsRunning = false;
+        let lastImpactTime = 0;
 
-        document.querySelectorAll('.draggable-sticker').forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const baseRot = parseFloat(el.style.getPropertyValue('--rot') || '0') || 0;
+        // Comic Starburst SVG Pop Effect (Limited to 1 active instance to prevent DOM lag)
+        let activeBurst = null;
+        function spawnImpactEffect(x, y) {
+            const now = performance.now();
+            if (now - lastImpactTime < 180) return; // Prevent spamming
+            lastImpactTime = now;
 
-            const item = {
-                el,
-                x: rect.left,
-                y: rect.top,
-                w: rect.width || 120,
-                h: rect.height || 36,
-                vx: 0,
-                vy: 0,
-                baseRot,
-                rot: baseRot,
-                vRot: 0,
-                isDragging: false,
-                grabOffsetX: 0,
-                grabOffsetY: 0,
-                prevPointerX: 0,
-                prevPointerY: 0,
-                prevTime: 0,
-                recentVx: 0,
-                recentVy: 0,
-                lastCollisionTime: 0
-            };
+            if (activeBurst && activeBurst.parentNode) {
+                activeBurst.remove();
+            }
 
-            stickers.push(item);
+            const burst = document.createElement('div');
+            burst.className = 'comic-impact-burst';
+            burst.style.setProperty('--burst-transform', `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0) translate(-50%, -50%)`);
 
-            // Set initial hardware-accelerated GPU position
-            el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0) rotate(${baseRot}deg)`;
+            // High-fidelity comic starburst matching user reference image
+            burst.innerHTML = `
+                <svg width="100" height="100" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
+                    <!-- Outer comic speed lines / dots -->
+                    <circle cx="20" cy="22" r="2.5" fill="black" />
+                    <circle cx="102" cy="18" r="2" fill="black" />
+                    <circle cx="108" cy="92" r="3" fill="black" />
+                    <circle cx="14" cy="78" r="2" fill="black" />
+                    <line x1="12" y1="12" x2="28" y2="28" stroke="black" stroke-width="3" stroke-linecap="round" />
+                    <line x1="108" y1="14" x2="94" y2="28" stroke="black" stroke-width="3" stroke-linecap="round" />
+                    <line x1="8" y1="105" x2="26" y2="92" stroke="black" stroke-width="3.5" stroke-linecap="round" />
+                    <line x1="112" y1="108" x2="96" y2="94" stroke="black" stroke-width="3" stroke-linecap="round" />
+                    
+                    <!-- Comic Halftone Shadow Starburst -->
+                    <path d="M60 4 L68 28 L94 12 L84 37 L114 34 L93 54 L118 72 L92 78 L104 104 L78 94 L72 118 L58 95 L40 114 L44 88 L18 100 L28 76 L4 68 L26 52 L6 32 L34 36 L30 10 L52 26 Z" 
+                          fill="black" transform="translate(3, 4)" />
 
-            el.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                item.isDragging = true;
-                topZIndex++;
-                el.style.zIndex = topZIndex;
-                el.classList.add('is-dragging');
+                    <!-- Yellow Comic Spiky Flash Starburst -->
+                    <path d="M60 4 L68 28 L94 12 L84 37 L114 34 L93 54 L118 72 L92 78 L104 104 L78 94 L72 118 L58 95 L40 114 L44 88 L18 100 L28 76 L4 68 L26 52 L6 32 L34 36 L30 10 L52 26 Z" 
+                          fill="#FACC15" stroke="black" stroke-width="4" stroke-linejoin="round" />
 
-                const r = el.getBoundingClientRect();
-                item.w = r.width;
-                item.h = r.height;
-                item.x = r.left;
-                item.y = r.top;
+                    <!-- Inner Bright Flash Center -->
+                    <path d="M60 22 L65 39 L83 28 L76 45 L97 43 L83 56 L100 69 L82 73 L90 92 L72 85 L67 102 L57 86 L43 99 L46 80 L27 89 L35 71 L17 65 L33 54 L19 40 L39 43 L37 25 L53 37 Z" 
+                          fill="#FEF08A" opacity="0.85" />
+                </svg>
+            `;
 
-                item.grabOffsetX = e.clientX - r.left;
-                item.grabOffsetY = e.clientY - r.top;
+            activeBurst = burst;
+            document.body.appendChild(burst);
 
-                item.prevPointerX = e.clientX;
-                item.prevPointerY = e.clientY;
-                item.prevTime = performance.now();
-                item.vx = 0;
-                item.vy = 0;
-                item.recentVx = 0;
-                item.recentVy = 0;
-                item.vRot = 0;
+            setTimeout(() => {
+                if (burst.parentNode) burst.remove();
+                if (activeBurst === burst) activeBurst = null;
+            }, 360);
+        }
 
-                try {
-                    el.setPointerCapture(e.pointerId);
-                } catch (_) {}
+        function initStickers() {
+            const winW = window.innerWidth;
+            const winH = window.innerHeight;
 
-                startPhysics();
-                playClickSound();
-            }, { passive: false });
+            document.querySelectorAll('.draggable-sticker').forEach((el) => {
+                const initTop = el.getAttribute('data-init-top');
+                const initBottom = el.getAttribute('data-init-bottom');
+                const initLeft = el.getAttribute('data-init-left');
+                const initRight = el.getAttribute('data-init-right');
+                const baseRot = parseFloat(el.getAttribute('data-rot') || '0');
 
-            el.addEventListener('pointermove', (e) => {
-                if (!item.isDragging) return;
-                e.preventDefault();
+                // Compute exact layout position
+                const rect = el.getBoundingClientRect();
+                const w = rect.width || 120;
+                const h = rect.height || 36;
 
-                const now = performance.now();
-                const dt = Math.max(8, Math.min(32, now - item.prevTime));
+                let posX = 20;
+                let posY = 100;
 
-                // Direct velocity calculation
-                const instantVx = ((e.clientX - item.prevPointerX) / dt) * 16;
-                const instantVy = ((e.clientY - item.prevPointerY) / dt) * 16;
-                item.recentVx = item.recentVx * 0.4 + instantVx * 0.6;
-                item.recentVy = item.recentVy * 0.4 + instantVy * 0.6;
+                if (initLeft !== null) posX = parseFloat(initLeft);
+                else if (initRight !== null) posX = winW - w - parseFloat(initRight);
 
-                item.prevPointerX = e.clientX;
-                item.prevPointerY = e.clientY;
-                item.prevTime = now;
+                if (initTop !== null) posY = parseFloat(initTop);
+                else if (initBottom !== null) posY = winH - h - parseFloat(initBottom);
 
-                // Move sticker
-                item.x = e.clientX - item.grabOffsetX;
-                item.y = e.clientY - item.grabOffsetY;
+                // Keep safely inside viewport
+                posX = Math.max(10, Math.min(winW - w - 10, posX));
+                posY = Math.max(10, Math.min(winH - h - 10, posY));
 
-                // Restrict within window
-                const maxX = window.innerWidth - item.w - 4;
-                const maxY = window.innerHeight - item.h - 4;
-                item.x = Math.max(4, Math.min(maxX, item.x));
-                item.y = Math.max(4, Math.min(maxY, item.y));
+                const item = {
+                    el,
+                    x: posX,
+                    y: posY,
+                    w,
+                    h,
+                    vx: 0,
+                    vy: 0,
+                    baseRot,
+                    rot: baseRot,
+                    vRot: 0,
+                    isDragging: false,
+                    grabOffsetX: 0,
+                    grabOffsetY: 0,
+                    lastPointerX: 0,
+                    lastPointerY: 0,
+                    lastMoveTime: 0,
+                    history: [],
+                    lastCollisionTime: 0
+                };
 
-                // Dynamic drag tilt
-                const dragTilt = Math.max(-18, Math.min(18, item.recentVx * 0.6));
-                el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0) scale(1.1) rotate(${item.rot + dragTilt}deg)`;
-            }, { passive: false });
+                stickers.push(item);
+                el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0) rotate(${item.rot}deg)`;
 
-            const onRelease = (e) => {
-                if (!item.isDragging) return;
-                item.isDragging = false;
-                el.classList.remove('is-dragging');
+                // Unified pointer event handlers
+                el.addEventListener('pointerdown', (e) => {
+                    item.isDragging = true;
+                    topZIndex++;
+                    el.style.zIndex = topZIndex;
+                    el.classList.add('is-dragging');
 
-                try {
-                    el.releasePointerCapture(e.pointerId);
-                } catch (_) {}
+                    // Measure actual element dimensions on touch
+                    const r = el.getBoundingClientRect();
+                    item.w = r.width;
+                    item.h = r.height;
 
-                // Throw with momentum (capped for stability)
-                item.vx = Math.max(-28, Math.min(28, item.recentVx));
-                item.vy = Math.max(-28, Math.min(28, item.recentVy));
-                item.vRot = Math.max(-10, Math.min(10, item.recentVx * 0.4));
-                startPhysics();
-            };
+                    item.grabOffsetX = e.clientX - item.x;
+                    item.grabOffsetY = e.clientY - item.y;
 
-            el.addEventListener('pointerup', onRelease);
-            el.addEventListener('pointercancel', onRelease);
-        });
+                    item.lastPointerX = e.clientX;
+                    item.lastPointerY = e.clientY;
+                    item.lastMoveTime = performance.now();
+                    item.history = [{ x: e.clientX, y: e.clientY, t: item.lastMoveTime }];
+
+                    item.vx = 0;
+                    item.vy = 0;
+                    item.vRot = 0;
+
+                    try {
+                        el.setPointerCapture(e.pointerId);
+                    } catch (_) {}
+
+                    startPhysics();
+                    playClickSound();
+                });
+
+                el.addEventListener('pointermove', (e) => {
+                    if (!item.isDragging) return;
+
+                    const now = performance.now();
+                    item.x = e.clientX - item.grabOffsetX;
+                    item.y = e.clientY - item.grabOffsetY;
+
+                    // Bound to screen during drag
+                    const maxX = window.innerWidth - item.w - 4;
+                    const maxY = window.innerHeight - item.h - 4;
+                    item.x = Math.max(4, Math.min(maxX, item.x));
+                    item.y = Math.max(4, Math.min(maxY, item.y));
+
+                    // Keep track of recent points for smooth throw calculation
+                    item.history.push({ x: e.clientX, y: e.clientY, t: now });
+                    if (item.history.length > 5) item.history.shift();
+
+                    // Calculate instantaneous tilt
+                    const dx = e.clientX - item.lastPointerX;
+                    item.lastPointerX = e.clientX;
+                    item.lastPointerY = e.clientY;
+                    item.lastMoveTime = now;
+
+                    const dragTilt = Math.max(-15, Math.min(15, dx * 0.4));
+                    el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0) scale(1.08) rotate(${item.baseRot + dragTilt}deg)`;
+                });
+
+                const onRelease = (e) => {
+                    if (!item.isDragging) return;
+                    item.isDragging = false;
+                    el.classList.remove('is-dragging');
+
+                    try {
+                        el.releasePointerCapture(e.pointerId);
+                    } catch (_) {}
+
+                    // Compute release momentum from historical positions
+                    const now = performance.now();
+                    const validPoints = item.history.filter(p => now - p.t < 120);
+
+                    if (validPoints.length >= 2) {
+                        const first = validPoints[0];
+                        const last = validPoints[validPoints.length - 1];
+                        const dt = Math.max(16, last.t - first.t);
+
+                        item.vx = ((last.x - first.x) / dt) * 16;
+                        item.vy = ((last.y - first.y) / dt) * 16;
+                        item.vRot = Math.max(-8, Math.min(8, item.vx * 0.3));
+
+                        // Clamp throw velocity
+                        item.vx = Math.max(-25, Math.min(25, item.vx));
+                        item.vy = Math.max(-25, Math.min(25, item.vy));
+                    } else {
+                        item.vx = 0;
+                        item.vy = 0;
+                        item.vRot = 0;
+                    }
+
+                    startPhysics();
+                };
+
+                el.addEventListener('pointerup', onRelease);
+                el.addEventListener('pointercancel', onRelease);
+            });
+        }
+
+        // Initialize on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initStickers);
+        } else {
+            initStickers();
+        }
 
         // Trigger visual and audio impact effect when two stickers hit
         function triggerCollisionFX(s1, s2, hitX, hitY, intensity) {
             const now = performance.now();
-            if (now - s1.lastCollisionTime < 160 && now - s2.lastCollisionTime < 160) return;
+            if (now - s1.lastCollisionTime < 200 && now - s2.lastCollisionTime < 200) return;
             s1.lastCollisionTime = now;
             s2.lastCollisionTime = now;
 
@@ -949,6 +954,7 @@
         function startPhysics() {
             if (!isPhysicsRunning) {
                 isPhysicsRunning = true;
+                lastFrameTime = performance.now();
                 requestAnimationFrame(physicsTick);
             }
         }
@@ -960,8 +966,8 @@
             const dt = Math.min(32, Math.max(8, currentTime - lastFrameTime)) / 16.67;
             lastFrameTime = currentTime;
 
-            const friction = Math.pow(0.94, dt);
-            const bounce = 0.75;
+            const friction = Math.pow(0.92, dt); // gentle drag deceleration
+            const bounce = 0.72;
             let activeMotion = false;
 
             // 1. Position & Boundary Updates
@@ -969,7 +975,8 @@
                 const s = stickers[i];
 
                 if (!s.isDragging) {
-                    if (Math.abs(s.vx) > 0.1 || Math.abs(s.vy) > 0.1 || Math.abs(s.vRot) > 0.08) {
+                    const speed = Math.hypot(s.vx, s.vy);
+                    if (speed > 0.15 || Math.abs(s.vRot) > 0.1) {
                         activeMotion = true;
 
                         s.x += s.vx * dt;
@@ -992,12 +999,12 @@
                         if (s.x <= 6) {
                             s.x = 6;
                             s.vx = -s.vx * bounce;
-                            s.vRot = -s.vRot * 0.6;
+                            s.vRot = -s.vRot * 0.5;
                             wallBounced = true;
                         } else if (s.x >= maxX) {
                             s.x = maxX;
                             s.vx = -s.vx * bounce;
-                            s.vRot = -s.vRot * 0.6;
+                            s.vRot = -s.vRot * 0.5;
                             wallBounced = true;
                         }
 
@@ -1011,7 +1018,7 @@
                             wallBounced = true;
                         }
 
-                        if (wallBounced && (Math.abs(s.vx) > 3 || Math.abs(s.vy) > 3)) {
+                        if (wallBounced && speed > 3) {
                             playBonkSound(1);
                         }
 
@@ -1036,7 +1043,7 @@
                     const dx = c2x - c1x;
                     const dy = c2y - c1y;
                     const dist = Math.hypot(dx, dy);
-                    const minDist = (s1.w + s2.w) * 0.38;
+                    const minDist = (s1.w + s2.w) * 0.36;
 
                     if (dist < minDist && dist > 0.1) {
                         const nx = dx / dist;
@@ -1048,33 +1055,37 @@
                             s1.y -= ny * overlap * 0.5;
                             s2.x += nx * overlap * 0.5;
                             s2.y += ny * overlap * 0.5;
+                            s1.el.style.transform = `translate3d(${s1.x}px, ${s1.y}px, 0) rotate(${s1.rot}deg)`;
+                            s2.el.style.transform = `translate3d(${s2.x}px, ${s2.y}px, 0) rotate(${s2.rot}deg)`;
                         } else if (s1.isDragging && !s2.isDragging) {
                             s2.x += nx * overlap;
                             s2.y += ny * overlap;
+                            s2.el.style.transform = `translate3d(${s2.x}px, ${s2.y}px, 0) rotate(${s2.rot}deg)`;
                         } else if (!s1.isDragging && s2.isDragging) {
                             s1.x -= nx * overlap;
                             s1.y -= ny * overlap;
+                            s1.el.style.transform = `translate3d(${s1.x}px, ${s1.y}px, 0) rotate(${s1.rot}deg)`;
                         }
 
                         const kx = s1.vx - s2.vx;
                         const ky = s1.vy - s2.vy;
-                        const p = 2 * (nx * kx + ny * ky) / 2;
+                        const p = (nx * kx + ny * ky);
 
                         if (p > 0 || s1.isDragging || s2.isDragging) {
-                            const hitIntensity = Math.hypot(kx, ky) + (s1.isDragging || s2.isDragging ? 6 : 0);
+                            const hitIntensity = Math.hypot(kx, ky) + (s1.isDragging || s2.isDragging ? 5 : 0);
 
                             if (!s1.isDragging) {
-                                s1.vx -= p * nx * 0.8;
-                                s1.vy -= p * ny * 0.8;
+                                s1.vx -= p * nx * 0.85;
+                                s1.vy -= p * ny * 0.85;
                                 s1.vRot += (Math.random() * 6 - 3);
                             }
                             if (!s2.isDragging) {
-                                s2.vx += p * nx * 0.8;
-                                s2.vy += p * ny * 0.8;
+                                s2.vx += p * nx * 0.85;
+                                s2.vy += p * ny * 0.85;
                                 s2.vRot += (Math.random() * 6 - 3);
                             }
 
-                            if (hitIntensity > 1.2) {
+                            if (hitIntensity > 1.0) {
                                 const hitX = (c1x + c2x) / 2;
                                 const hitY = (c1y + c2y) / 2;
                                 triggerCollisionFX(s1, s2, hitX, hitY, hitIntensity);
