@@ -764,280 +764,274 @@
         // Toast Notification helper
         const toast = document.getElementById('toast');
 
-        // Draggable & Throwing Physics Stickers System (Inertia, Bounce, Sticker-to-Sticker Collision, Spin & Comic FX)
-        let topZIndex = 50;
-        const stickerObjects = [];
+        // ============================================================
+        // PRO RETRO STICKER PHYSICS ENGINE (SMOOTH DRAG, THROW & COLLISION)
+        // ============================================================
+        let topZIndex = 60;
+        const stickers = [];
 
-        document.querySelectorAll('.draggable-sticker').forEach(sticker => {
-            const obj = {
-                el: sticker,
-                isDragging: false,
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0,
+        document.querySelectorAll('.draggable-sticker').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            // Freeze to explicit top/left px coordinates
+            el.style.left = `${rect.left}px`;
+            el.style.top = `${rect.top}px`;
+            el.style.right = 'auto';
+            el.style.bottom = 'auto';
+
+            const baseRot = parseFloat(el.style.getPropertyValue('--rot') || '0') || 0;
+
+            const item = {
+                el,
+                x: rect.left,
+                y: rect.top,
+                w: rect.width || 120,
+                h: rect.height || 36,
                 vx: 0,
                 vy: 0,
-                rotation: parseFloat(sticker.style.getPropertyValue('--rot') || '0') || 0,
-                angularVelocity: 0,
-                lastPointerX: 0,
-                lastPointerY: 0,
-                lastTime: 0,
-                dragStartLeft: 0,
-                dragStartTop: 0,
-                startPointerX: 0,
-                startPointerY: 0,
-                radius: 40, // effective collision circle radius
-                lastHitTime: 0
+                baseRot,
+                rot: baseRot,
+                vRot: 0,
+                isDragging: false,
+                grabOffsetX: 0,
+                grabOffsetY: 0,
+                prevPointerX: 0,
+                prevPointerY: 0,
+                prevTime: 0,
+                recentVx: 0,
+                recentVy: 0,
+                lastCollisionTime: 0
             };
 
-            stickerObjects.push(obj);
+            stickers.push(item);
 
-            function updateDimensions() {
-                const rect = sticker.getBoundingClientRect();
-                obj.width = rect.width;
-                obj.height = rect.height;
-                obj.radius = Math.max(rect.width, rect.height) * 0.44;
-            }
+            // Set initial inline styling
+            el.style.transform = `rotate(${baseRot}deg)`;
 
-            function applyTransform(scale = 1, extraRot = 0) {
-                sticker.style.transform = `scale(${scale}) rotate(${obj.rotation + extraRot}deg)`;
-            }
-
-            // Sync initial transform and position
-            const initialRect = sticker.getBoundingClientRect();
-            obj.x = initialRect.left;
-            obj.y = initialRect.top;
-            updateDimensions();
-            applyTransform(1);
-
-            sticker.addEventListener('pointerdown', (e) => {
-                obj.isDragging = true;
+            el.addEventListener('pointerdown', (e) => {
+                item.isDragging = true;
                 topZIndex++;
-                sticker.style.zIndex = topZIndex;
+                el.style.zIndex = topZIndex;
+                el.classList.add('is-dragging');
 
-                const rect = sticker.getBoundingClientRect();
-                obj.x = rect.left;
-                obj.y = rect.top;
-                obj.dragStartLeft = rect.left;
-                obj.dragStartTop = rect.top;
-                updateDimensions();
+                const r = el.getBoundingClientRect();
+                item.w = r.width;
+                item.h = r.height;
+                item.x = r.left;
+                item.y = r.top;
 
-                sticker.style.left = `${obj.x}px`;
-                sticker.style.top = `${obj.y}px`;
-                sticker.style.right = 'auto';
-                sticker.style.bottom = 'auto';
+                item.grabOffsetX = e.clientX - r.left;
+                item.grabOffsetY = e.clientY - r.top;
 
-                obj.startPointerX = e.clientX;
-                obj.startPointerY = e.clientY;
-                obj.lastPointerX = e.clientX;
-                obj.lastPointerY = e.clientY;
-                obj.lastTime = performance.now();
-                obj.vx = 0;
-                obj.vy = 0;
-                obj.angularVelocity = 0;
+                item.prevPointerX = e.clientX;
+                item.prevPointerY = e.clientY;
+                item.prevTime = performance.now();
+                item.vx = 0;
+                item.vy = 0;
+                item.recentVx = 0;
+                item.recentVy = 0;
+                item.vRot = 0;
 
-                sticker.classList.add('is-dragging');
-                applyTransform(1.15);
-                sticker.setPointerCapture(e.pointerId);
+                try {
+                    el.setPointerCapture(e.pointerId);
+                } catch (_) {}
                 playClickSound();
             });
 
-            sticker.addEventListener('pointermove', (e) => {
-                if (!obj.isDragging) return;
+            el.addEventListener('pointermove', (e) => {
+                if (!item.isDragging) return;
 
                 const now = performance.now();
-                const dt = Math.max(1, now - obj.lastTime);
+                const dt = Math.max(1, now - item.prevTime);
 
-                // Calculate instantaneous velocity
-                obj.vx = ((e.clientX - obj.lastPointerX) / dt) * 16;
-                obj.vy = ((e.clientY - obj.lastPointerY) / dt) * 16;
+                // Velocity smoothing for throwing
+                const instantVx = ((e.clientX - item.prevPointerX) / dt) * 16;
+                const instantVy = ((e.clientY - item.prevPointerY) / dt) * 16;
+                item.recentVx = item.recentVx * 0.4 + instantVx * 0.6;
+                item.recentVy = item.recentVy * 0.4 + instantVy * 0.6;
 
-                obj.lastPointerX = e.clientX;
-                obj.lastPointerY = e.clientY;
-                obj.lastTime = now;
+                item.prevPointerX = e.clientX;
+                item.prevPointerY = e.clientY;
+                item.prevTime = now;
 
-                const dx = e.clientX - obj.startPointerX;
-                const dy = e.clientY - obj.startPointerY;
+                // Move sticker
+                item.x = e.clientX - item.grabOffsetX;
+                item.y = e.clientY - item.grabOffsetY;
 
-                obj.x = obj.dragStartLeft + dx;
-                obj.y = obj.dragStartTop + dy;
+                // Restrict within window
+                const maxX = window.innerWidth - item.w - 4;
+                const maxY = window.innerHeight - item.h - 4;
+                item.x = Math.max(4, Math.min(maxX, item.x));
+                item.y = Math.max(4, Math.min(maxY, item.y));
 
-                // Tilt sticker dynamically with move speed
-                const speedTilt = Math.max(-25, Math.min(25, obj.vx * 0.8));
-                applyTransform(1.15, speedTilt);
-
-                sticker.style.left = `${obj.x}px`;
-                sticker.style.top = `${obj.y}px`;
+                // Dynamic drag tilt
+                const dragTilt = Math.max(-20, Math.min(20, item.recentVx * 0.7));
+                el.style.left = `${item.x}px`;
+                el.style.top = `${item.y}px`;
+                el.style.transform = `scale(1.12) rotate(${item.rot + dragTilt}deg)`;
             });
 
-            const stopDrag = (e) => {
-                if (!obj.isDragging) return;
-                obj.isDragging = false;
-                sticker.classList.remove('is-dragging');
+            const onRelease = (e) => {
+                if (!item.isDragging) return;
+                item.isDragging = false;
+                el.classList.remove('is-dragging');
+
                 try {
-                    sticker.releasePointerCapture(e.pointerId);
+                    el.releasePointerCapture(e.pointerId);
                 } catch (_) {}
 
-                // Spin sticker based on throw speed
-                obj.angularVelocity = (obj.vx * 0.5) + (Math.random() * 2 - 1);
+                // Throw with momentum
+                item.vx = Math.max(-30, Math.min(30, item.recentVx));
+                item.vy = Math.max(-30, Math.min(30, item.recentVy));
+                item.vRot = Math.max(-12, Math.min(12, item.recentVx * 0.5));
             };
 
-            sticker.addEventListener('pointerup', stopDrag);
-            sticker.addEventListener('pointercancel', stopDrag);
+            el.addEventListener('pointerup', onRelease);
+            el.addEventListener('pointercancel', onRelease);
         });
 
-        // Trigger visual and audio impact effect when two stickers collide
-        function triggerCollisionFX(s1, s2, hitX, hitY, relativeVelocity) {
+        // Trigger visual and audio impact effect when two stickers hit
+        function triggerCollisionFX(s1, s2, hitX, hitY, intensity) {
             const now = performance.now();
-            if (now - s1.lastHitTime < 120 && now - s2.lastHitTime < 120) return;
-            s1.lastHitTime = now;
-            s2.lastHitTime = now;
+            if (now - s1.lastCollisionTime < 140 && now - s2.lastCollisionTime < 140) return;
+            s1.lastCollisionTime = now;
+            s2.lastCollisionTime = now;
 
             // Audio feedback
-            playBonkSound(Math.min(3, relativeVelocity * 0.25));
+            playBonkSound(Math.min(2.5, 0.8 + intensity * 0.15));
 
-            // Comic spark pop particle
+            // Visual comic pop effect
             spawnImpactEffect(hitX, hitY);
 
-            // Neubrutal jolt animation on elements
-            s1.el.classList.remove('sticker-hit');
-            s2.el.classList.remove('sticker-hit');
-            // Force DOM reflow to re-trigger animation
-            void s1.el.offsetWidth;
-            void s2.el.offsetWidth;
-            s1.el.classList.add('sticker-hit');
-            s2.el.classList.add('sticker-hit');
-
-            setTimeout(() => {
-                s1.el.classList.remove('sticker-hit');
-                s2.el.classList.remove('sticker-hit');
-            }, 250);
+            // Jolt animation
+            [s1, s2].forEach(s => {
+                s.el.classList.remove('sticker-hit');
+                void s.el.offsetWidth; // trigger reflow
+                s.el.classList.add('sticker-hit');
+                setTimeout(() => s.el.classList.remove('sticker-hit'), 200);
+            });
         }
 
-        // Global Unified Physics Simulation Loop for all Stickers
+        // Continuous Physics Loop
         function runStickerPhysicsLoop() {
             const friction = 0.94;
-            const bounceRestitution = 0.75;
-            const now = performance.now();
+            const bounce = 0.75;
 
-            for (let i = 0; i < stickerObjects.length; i++) {
-                const s = stickerObjects[i];
+            // 1. Position & Boundary Updates
+            for (let i = 0; i < stickers.length; i++) {
+                const s = stickers[i];
 
                 if (!s.isDragging) {
+                    // Update movement
                     s.x += s.vx;
                     s.y += s.vy;
-                    s.rotation += s.angularVelocity;
+                    s.rot += s.vRot;
 
+                    // Apply friction
                     s.vx *= friction;
                     s.vy *= friction;
-                    s.angularVelocity *= 0.95;
+                    s.vRot *= 0.95;
 
-                    const maxX = window.innerWidth - s.width - 8;
-                    const maxY = window.innerHeight - s.height - 8;
-                    let hasWallBounced = false;
+                    // Stop micro jitters
+                    if (Math.abs(s.vx) < 0.08) s.vx = 0;
+                    if (Math.abs(s.vy) < 0.08) s.vy = 0;
+                    if (Math.abs(s.vRot) < 0.05) s.vRot = 0;
 
-                    // Wall collision - Left / Right
-                    if (s.x <= 8) {
-                        s.x = 8;
-                        s.vx = -s.vx * bounceRestitution;
-                        s.angularVelocity = -s.angularVelocity * 0.8;
-                        hasWallBounced = true;
+                    // Wall boundaries
+                    const maxX = window.innerWidth - s.w - 6;
+                    const maxY = window.innerHeight - s.h - 6;
+                    let wallBounced = false;
+
+                    if (s.x <= 6) {
+                        s.x = 6;
+                        s.vx = -s.vx * bounce;
+                        s.vRot = -s.vRot * 0.7;
+                        wallBounced = true;
                     } else if (s.x >= maxX) {
                         s.x = maxX;
-                        s.vx = -s.vx * bounceRestitution;
-                        s.angularVelocity = -s.angularVelocity * 0.8;
-                        hasWallBounced = true;
+                        s.vx = -s.vx * bounce;
+                        s.vRot = -s.vRot * 0.7;
+                        wallBounced = true;
                     }
 
-                    // Wall collision - Top / Bottom
-                    if (s.y <= 8) {
-                        s.y = 8;
-                        s.vy = -s.vy * bounceRestitution;
-                        hasWallBounced = true;
+                    if (s.y <= 6) {
+                        s.y = 6;
+                        s.vy = -s.vy * bounce;
+                        wallBounced = true;
                     } else if (s.y >= maxY) {
                         s.y = maxY;
-                        s.vy = -s.vy * bounceRestitution;
-                        hasWallBounced = true;
+                        s.vy = -s.vy * bounce;
+                        wallBounced = true;
                     }
 
-                    if (hasWallBounced && (Math.abs(s.vx) > 3 || Math.abs(s.vy) > 3)) {
+                    if (wallBounced && (Math.abs(s.vx) > 3 || Math.abs(s.vy) > 3)) {
                         playBonkSound(1);
                     }
 
                     s.el.style.left = `${s.x}px`;
                     s.el.style.top = `${s.y}px`;
-                    s.el.style.transform = `scale(1) rotate(${s.rotation}deg)`;
+                    s.el.style.transform = `scale(1) rotate(${s.rot}deg)`;
                 }
+            }
 
-                // Sticker-to-Sticker Pairwise Collision Resolution
-                for (let j = i + 1; j < stickerObjects.length; j++) {
-                    const s2 = stickerObjects[j];
+            // 2. Sticker-to-Sticker Collisions (AABB + Center Circle detection)
+            for (let i = 0; i < stickers.length; i++) {
+                for (let j = i + 1; j < stickers.length; j++) {
+                    const s1 = stickers[i];
+                    const s2 = stickers[j];
 
-                    // Centers
-                    const c1x = s.x + s.width / 2;
-                    const c1y = s.y + s.height / 2;
-                    const c2x = s2.x + s2.width / 2;
-                    const c2y = s2.y + s2.height / 2;
+                    // Center points
+                    const c1x = s1.x + s1.w / 2;
+                    const c1y = s1.y + s1.h / 2;
+                    const c2x = s2.x + s2.w / 2;
+                    const c2y = s2.y + s2.h / 2;
 
                     const dx = c2x - c1x;
                     const dy = c2y - c1y;
                     const dist = Math.hypot(dx, dy);
-                    const minDist = s.radius + s2.radius;
+                    const minDist = (s1.w + s2.w) * 0.38; // collision distance
 
-                    if (dist < minDist && dist > 0.001) {
-                        // Overlap detected! Normal vector
+                    if (dist < minDist && dist > 0.1) {
                         const nx = dx / dist;
                         const ny = dy / dist;
+                        const overlap = minDist - dist;
 
-                        // Separate overlapping stickers
-                        const overlap = (minDist - dist);
-                        const separationPercent = 0.5;
-
-                        if (!s.isDragging && !s2.isDragging) {
-                            s.x -= nx * overlap * separationPercent;
-                            s.y -= ny * overlap * separationPercent;
-                            s2.x += nx * overlap * separationPercent;
-                            s2.y += ny * overlap * separationPercent;
-                        } else if (s.isDragging && !s2.isDragging) {
+                        // Separate overlapping elements cleanly
+                        if (!s1.isDragging && !s2.isDragging) {
+                            s1.x -= nx * overlap * 0.5;
+                            s1.y -= ny * overlap * 0.5;
+                            s2.x += nx * overlap * 0.5;
+                            s2.y += ny * overlap * 0.5;
+                        } else if (s1.isDragging && !s2.isDragging) {
                             s2.x += nx * overlap;
                             s2.y += ny * overlap;
-                        } else if (!s.isDragging && s2.isDragging) {
-                            s.x -= nx * overlap;
-                            s.y -= ny * overlap;
+                        } else if (!s1.isDragging && s2.isDragging) {
+                            s1.x -= nx * overlap;
+                            s1.y -= ny * overlap;
                         }
 
-                        // Relative velocity along collision normal
-                        const rvx = s2.vx - s.vx;
-                        const rvy = s2.vy - s.vy;
-                        const velAlongNormal = rvx * nx + rvy * ny;
+                        // Velocity along normal
+                        const kx = s1.vx - s2.vx;
+                        const ky = s1.vy - s2.vy;
+                        const p = 2 * (nx * kx + ny * ky) / 2;
 
-                        // Only bounce if they are moving towards each other
-                        if (velAlongNormal < 0) {
-                            const restitution = 0.85; // Bouncy elastic collision
-                            const impulseMagnitude = -(1 + restitution) * velAlongNormal / 2;
+                        if (p > 0 || s1.isDragging || s2.isDragging) {
+                            const hitIntensity = Math.hypot(kx, ky) + (s1.isDragging || s2.isDragging ? 6 : 0);
 
-                            const impulseX = impulseMagnitude * nx;
-                            const impulseY = impulseMagnitude * ny;
-
-                            if (!s.isDragging) {
-                                s.vx -= impulseX;
-                                s.vy -= impulseY;
-                                s.angularVelocity += (Math.random() * 8 - 4);
+                            if (!s1.isDragging) {
+                                s1.vx -= p * nx * 0.8;
+                                s1.vy -= p * ny * 0.8;
+                                s1.vRot += (Math.random() * 6 - 3);
                             }
                             if (!s2.isDragging) {
-                                s2.vx += impulseX;
-                                s2.vy += impulseY;
-                                s2.angularVelocity += (Math.random() * 8 - 4);
+                                s2.vx += p * nx * 0.8;
+                                s2.vy += p * ny * 0.8;
+                                s2.vRot += (Math.random() * 6 - 3);
                             }
 
-                            // Calculate collision impact midpoint
-                            const hitX = (c1x + c2x) / 2;
-                            const hitY = (c1y + c2y) / 2;
-                            const relativeSpeed = Math.hypot(rvx, rvy);
-
-                            if (relativeSpeed > 1.2 || s.isDragging || s2.isDragging) {
-                                triggerCollisionFX(s, s2, hitX, hitY, Math.max(relativeSpeed, 3));
+                            if (hitIntensity > 1.2) {
+                                const hitX = (c1x + c2x) / 2;
+                                const hitY = (c1y + c2y) / 2;
+                                triggerCollisionFX(s1, s2, hitX, hitY, hitIntensity);
                             }
                         }
                     }
