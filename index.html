@@ -115,6 +115,41 @@
             z-index: 60 !important;
         }
 
+        /* Collision Impact Jolt / Shockwave Effect */
+        .sticker-hit {
+            animation: sticker-jolt 0.18s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            box-shadow: 8px 8px 0px 0px #FACC15, 8px 8px 0px 2px #000000 !important;
+        }
+
+        @keyframes sticker-jolt {
+            0% { filter: brightness(1.6); }
+            50% { filter: brightness(1.3); }
+            100% { filter: brightness(1); }
+        }
+
+        /* Comic "POW / BAM" Spark Particle */
+        .impact-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 70;
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: 0.85rem;
+            color: #000;
+            background: #FACC15;
+            border: 2px solid #000;
+            padding: 2px 6px;
+            box-shadow: 3px 3px 0px 0px #000;
+            transform: translate(-50%, -50%) scale(0.6);
+            animation: impact-pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes impact-pop {
+            0% { transform: translate(-50%, -50%) scale(0.5) rotate(-10deg); opacity: 0; }
+            40% { transform: translate(-50%, -50%) scale(1.15) rotate(5deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0.9) translateY(-14px) rotate(15deg); opacity: 0; }
+        }
+
         :root {
             --color-primary: #FACC15;
             --on-black-text: #FACC15;
@@ -646,6 +681,45 @@
             oscillator.stop(audioContext.currentTime + 0.1);
         }
 
+        // Tactile Bonk/Collision Sound
+        function playBonkSound(intensity = 1) {
+            if (!soundEnabled) return;
+            initAudio();
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.type = 'triangle';
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            const baseFreq = 180 + Math.random() * 80;
+            oscillator.frequency.setValueAtTime(baseFreq, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(60, audioContext.currentTime + 0.12);
+
+            const vol = Math.min(0.25, 0.08 * intensity);
+            gainNode.gain.setValueAtTime(vol, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.12);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.12);
+        }
+
+        // Comic Spark Pop Effect ("POW!", "BAM!", "BONK!", "⚡")
+        const impactWords = ['BAM!', 'POW!', 'BONK!', 'CLASH!', '⚡', 'WHAM!'];
+        function spawnImpactEffect(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'impact-particle';
+            particle.textContent = impactWords[Math.floor(Math.random() * impactWords.length)];
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 400);
+        }
+
         function playHoverSound() {
             if (!soundEnabled) return;
 
@@ -690,170 +764,291 @@
         // Toast Notification helper
         const toast = document.getElementById('toast');
 
-        // Draggable & Throwing Physics Stickers System (Inertia, Bounce, Spin & Sound)
+        // Draggable & Throwing Physics Stickers System (Inertia, Bounce, Sticker-to-Sticker Collision, Spin & Comic FX)
         let topZIndex = 50;
+        const stickerObjects = [];
+
         document.querySelectorAll('.draggable-sticker').forEach(sticker => {
-            let isDragging = false;
-            let currentX = 0, currentY = 0;
-            let startPointerX = 0, startPointerY = 0;
-            let dragStartLeft = 0, dragStartTop = 0;
+            const obj = {
+                el: sticker,
+                isDragging: false,
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0,
+                vx: 0,
+                vy: 0,
+                rotation: parseFloat(sticker.style.getPropertyValue('--rot') || '0') || 0,
+                angularVelocity: 0,
+                lastPointerX: 0,
+                lastPointerY: 0,
+                lastTime: 0,
+                dragStartLeft: 0,
+                dragStartTop: 0,
+                startPointerX: 0,
+                startPointerY: 0,
+                radius: 40, // effective collision circle radius
+                lastHitTime: 0
+            };
 
-            // Physics velocity tracking
-            let vx = 0, vy = 0;
-            let lastPointerX = 0, lastPointerY = 0;
-            let lastTime = 0;
-            let animationFrameId = null;
+            stickerObjects.push(obj);
 
-            // Rotation & Spin physics
-            let currentRotation = parseFloat(sticker.style.getPropertyValue('--rot') || '0') || 0;
-            let angularVelocity = 0;
-
-            function applyTransform(scale = 1) {
-                sticker.style.transform = `scale(${scale}) rotate(${currentRotation}deg)`;
+            function updateDimensions() {
+                const rect = sticker.getBoundingClientRect();
+                obj.width = rect.width;
+                obj.height = rect.height;
+                obj.radius = Math.max(rect.width, rect.height) * 0.44;
             }
 
-            // Sync initial transform
+            function applyTransform(scale = 1, extraRot = 0) {
+                sticker.style.transform = `scale(${scale}) rotate(${obj.rotation + extraRot}deg)`;
+            }
+
+            // Sync initial transform and position
+            const initialRect = sticker.getBoundingClientRect();
+            obj.x = initialRect.left;
+            obj.y = initialRect.top;
+            updateDimensions();
             applyTransform(1);
 
             sticker.addEventListener('pointerdown', (e) => {
-                isDragging = true;
-                if (animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
-                    animationFrameId = null;
-                }
-
-                sticker.classList.add('is-dragging');
+                obj.isDragging = true;
                 topZIndex++;
                 sticker.style.zIndex = topZIndex;
 
                 const rect = sticker.getBoundingClientRect();
-                currentX = rect.left;
-                currentY = rect.top;
-                dragStartLeft = rect.left;
-                dragStartTop = rect.top;
+                obj.x = rect.left;
+                obj.y = rect.top;
+                obj.dragStartLeft = rect.left;
+                obj.dragStartTop = rect.top;
+                updateDimensions();
 
-                sticker.style.left = `${currentX}px`;
-                sticker.style.top = `${currentY}px`;
+                sticker.style.left = `${obj.x}px`;
+                sticker.style.top = `${obj.y}px`;
                 sticker.style.right = 'auto';
                 sticker.style.bottom = 'auto';
 
-                startPointerX = e.clientX;
-                startPointerY = e.clientY;
-                lastPointerX = e.clientX;
-                lastPointerY = e.clientY;
-                lastTime = performance.now();
-                vx = 0;
-                vy = 0;
-                angularVelocity = 0;
+                obj.startPointerX = e.clientX;
+                obj.startPointerY = e.clientY;
+                obj.lastPointerX = e.clientX;
+                obj.lastPointerY = e.clientY;
+                obj.lastTime = performance.now();
+                obj.vx = 0;
+                obj.vy = 0;
+                obj.angularVelocity = 0;
 
+                sticker.classList.add('is-dragging');
                 applyTransform(1.15);
                 sticker.setPointerCapture(e.pointerId);
                 playClickSound();
             });
 
             sticker.addEventListener('pointermove', (e) => {
-                if (!isDragging) return;
+                if (!obj.isDragging) return;
 
                 const now = performance.now();
-                const dt = Math.max(1, now - lastTime);
+                const dt = Math.max(1, now - obj.lastTime);
 
-                // Calculate instantaneous velocity (pixels per frame ~16ms)
-                vx = ((e.clientX - lastPointerX) / dt) * 16;
-                vy = ((e.clientY - lastPointerY) / dt) * 16;
+                // Calculate instantaneous velocity
+                obj.vx = ((e.clientX - obj.lastPointerX) / dt) * 16;
+                obj.vy = ((e.clientY - obj.lastPointerY) / dt) * 16;
 
-                lastPointerX = e.clientX;
-                lastPointerY = e.clientY;
-                lastTime = now;
+                obj.lastPointerX = e.clientX;
+                obj.lastPointerY = e.clientY;
+                obj.lastTime = now;
 
-                const dx = e.clientX - startPointerX;
-                const dy = e.clientY - startPointerY;
+                const dx = e.clientX - obj.startPointerX;
+                const dy = e.clientY - obj.startPointerY;
 
-                currentX = dragStartLeft + dx;
-                currentY = dragStartTop + dy;
+                obj.x = obj.dragStartLeft + dx;
+                obj.y = obj.dragStartTop + dy;
 
-                // Tilt sticker dynamically according to movement speed
-                const speedTilt = Math.max(-25, Math.min(25, vx * 0.8));
-                sticker.style.transform = `scale(1.15) rotate(${currentRotation + speedTilt}deg)`;
+                // Tilt sticker dynamically with move speed
+                const speedTilt = Math.max(-25, Math.min(25, obj.vx * 0.8));
+                applyTransform(1.15, speedTilt);
 
-                sticker.style.left = `${currentX}px`;
-                sticker.style.top = `${currentY}px`;
+                sticker.style.left = `${obj.x}px`;
+                sticker.style.top = `${obj.y}px`;
             });
 
             const stopDrag = (e) => {
-                if (!isDragging) return;
-                isDragging = false;
+                if (!obj.isDragging) return;
+                obj.isDragging = false;
                 sticker.classList.remove('is-dragging');
                 try {
                     sticker.releasePointerCapture(e.pointerId);
                 } catch (_) {}
 
-                // Throwing inertia & bouncing physics loop
-                const friction = 0.94; // air resistance
-                const bounceRestitution = 0.72; // elasticity when hitting walls
-
                 // Spin sticker based on throw speed
-                angularVelocity = (vx * 0.5) + (Math.random() * 2 - 1);
-
-                function stepPhysics() {
-                    currentX += vx;
-                    currentY += vy;
-                    currentRotation += angularVelocity;
-
-                    vx *= friction;
-                    vy *= friction;
-                    angularVelocity *= 0.95;
-
-                    const maxX = window.innerWidth - sticker.offsetWidth - 8;
-                    const maxY = window.innerHeight - sticker.offsetHeight - 8;
-                    let hasBounced = false;
-
-                    // Bounce off left / right walls
-                    if (currentX <= 8) {
-                        currentX = 8;
-                        vx = -vx * bounceRestitution;
-                        angularVelocity = -angularVelocity * 0.8;
-                        hasBounced = true;
-                    } else if (currentX >= maxX) {
-                        currentX = maxX;
-                        vx = -vx * bounceRestitution;
-                        angularVelocity = -angularVelocity * 0.8;
-                        hasBounced = true;
-                    }
-
-                    // Bounce off top / bottom walls
-                    if (currentY <= 8) {
-                        currentY = 8;
-                        vy = -vy * bounceRestitution;
-                        hasBounced = true;
-                    } else if (currentY >= maxY) {
-                        currentY = maxY;
-                        vy = -vy * bounceRestitution;
-                        hasBounced = true;
-                    }
-
-                    // Play bounce audio feedback if hit with high velocity
-                    if (hasBounced && (Math.abs(vx) > 3 || Math.abs(vy) > 3)) {
-                        playClickSound();
-                    }
-
-                    sticker.style.left = `${currentX}px`;
-                    sticker.style.top = `${currentY}px`;
-                    applyTransform(1);
-
-                    // Continue physics simulation until velocity dies down
-                    if (Math.abs(vx) > 0.15 || Math.abs(vy) > 0.15 || Math.abs(angularVelocity) > 0.05) {
-                        animationFrameId = requestAnimationFrame(stepPhysics);
-                    } else {
-                        animationFrameId = null;
-                    }
-                }
-
-                animationFrameId = requestAnimationFrame(stepPhysics);
+                obj.angularVelocity = (obj.vx * 0.5) + (Math.random() * 2 - 1);
             };
 
             sticker.addEventListener('pointerup', stopDrag);
             sticker.addEventListener('pointercancel', stopDrag);
         });
+
+        // Trigger visual and audio impact effect when two stickers collide
+        function triggerCollisionFX(s1, s2, hitX, hitY, relativeVelocity) {
+            const now = performance.now();
+            if (now - s1.lastHitTime < 120 && now - s2.lastHitTime < 120) return;
+            s1.lastHitTime = now;
+            s2.lastHitTime = now;
+
+            // Audio feedback
+            playBonkSound(Math.min(3, relativeVelocity * 0.25));
+
+            // Comic spark pop particle
+            spawnImpactEffect(hitX, hitY);
+
+            // Neubrutal jolt animation on elements
+            s1.el.classList.remove('sticker-hit');
+            s2.el.classList.remove('sticker-hit');
+            // Force DOM reflow to re-trigger animation
+            void s1.el.offsetWidth;
+            void s2.el.offsetWidth;
+            s1.el.classList.add('sticker-hit');
+            s2.el.classList.add('sticker-hit');
+
+            setTimeout(() => {
+                s1.el.classList.remove('sticker-hit');
+                s2.el.classList.remove('sticker-hit');
+            }, 250);
+        }
+
+        // Global Unified Physics Simulation Loop for all Stickers
+        function runStickerPhysicsLoop() {
+            const friction = 0.94;
+            const bounceRestitution = 0.75;
+            const now = performance.now();
+
+            for (let i = 0; i < stickerObjects.length; i++) {
+                const s = stickerObjects[i];
+
+                if (!s.isDragging) {
+                    s.x += s.vx;
+                    s.y += s.vy;
+                    s.rotation += s.angularVelocity;
+
+                    s.vx *= friction;
+                    s.vy *= friction;
+                    s.angularVelocity *= 0.95;
+
+                    const maxX = window.innerWidth - s.width - 8;
+                    const maxY = window.innerHeight - s.height - 8;
+                    let hasWallBounced = false;
+
+                    // Wall collision - Left / Right
+                    if (s.x <= 8) {
+                        s.x = 8;
+                        s.vx = -s.vx * bounceRestitution;
+                        s.angularVelocity = -s.angularVelocity * 0.8;
+                        hasWallBounced = true;
+                    } else if (s.x >= maxX) {
+                        s.x = maxX;
+                        s.vx = -s.vx * bounceRestitution;
+                        s.angularVelocity = -s.angularVelocity * 0.8;
+                        hasWallBounced = true;
+                    }
+
+                    // Wall collision - Top / Bottom
+                    if (s.y <= 8) {
+                        s.y = 8;
+                        s.vy = -s.vy * bounceRestitution;
+                        hasWallBounced = true;
+                    } else if (s.y >= maxY) {
+                        s.y = maxY;
+                        s.vy = -s.vy * bounceRestitution;
+                        hasWallBounced = true;
+                    }
+
+                    if (hasWallBounced && (Math.abs(s.vx) > 3 || Math.abs(s.vy) > 3)) {
+                        playBonkSound(1);
+                    }
+
+                    s.el.style.left = `${s.x}px`;
+                    s.el.style.top = `${s.y}px`;
+                    s.el.style.transform = `scale(1) rotate(${s.rotation}deg)`;
+                }
+
+                // Sticker-to-Sticker Pairwise Collision Resolution
+                for (let j = i + 1; j < stickerObjects.length; j++) {
+                    const s2 = stickerObjects[j];
+
+                    // Centers
+                    const c1x = s.x + s.width / 2;
+                    const c1y = s.y + s.height / 2;
+                    const c2x = s2.x + s2.width / 2;
+                    const c2y = s2.y + s2.height / 2;
+
+                    const dx = c2x - c1x;
+                    const dy = c2y - c1y;
+                    const dist = Math.hypot(dx, dy);
+                    const minDist = s.radius + s2.radius;
+
+                    if (dist < minDist && dist > 0.001) {
+                        // Overlap detected! Normal vector
+                        const nx = dx / dist;
+                        const ny = dy / dist;
+
+                        // Separate overlapping stickers
+                        const overlap = (minDist - dist);
+                        const separationPercent = 0.5;
+
+                        if (!s.isDragging && !s2.isDragging) {
+                            s.x -= nx * overlap * separationPercent;
+                            s.y -= ny * overlap * separationPercent;
+                            s2.x += nx * overlap * separationPercent;
+                            s2.y += ny * overlap * separationPercent;
+                        } else if (s.isDragging && !s2.isDragging) {
+                            s2.x += nx * overlap;
+                            s2.y += ny * overlap;
+                        } else if (!s.isDragging && s2.isDragging) {
+                            s.x -= nx * overlap;
+                            s.y -= ny * overlap;
+                        }
+
+                        // Relative velocity along collision normal
+                        const rvx = s2.vx - s.vx;
+                        const rvy = s2.vy - s.vy;
+                        const velAlongNormal = rvx * nx + rvy * ny;
+
+                        // Only bounce if they are moving towards each other
+                        if (velAlongNormal < 0) {
+                            const restitution = 0.85; // Bouncy elastic collision
+                            const impulseMagnitude = -(1 + restitution) * velAlongNormal / 2;
+
+                            const impulseX = impulseMagnitude * nx;
+                            const impulseY = impulseMagnitude * ny;
+
+                            if (!s.isDragging) {
+                                s.vx -= impulseX;
+                                s.vy -= impulseY;
+                                s.angularVelocity += (Math.random() * 8 - 4);
+                            }
+                            if (!s2.isDragging) {
+                                s2.vx += impulseX;
+                                s2.vy += impulseY;
+                                s2.angularVelocity += (Math.random() * 8 - 4);
+                            }
+
+                            // Calculate collision impact midpoint
+                            const hitX = (c1x + c2x) / 2;
+                            const hitY = (c1y + c2y) / 2;
+                            const relativeSpeed = Math.hypot(rvx, rvy);
+
+                            if (relativeSpeed > 1.2 || s.isDragging || s2.isDragging) {
+                                triggerCollisionFX(s, s2, hitX, hitY, Math.max(relativeSpeed, 3));
+                            }
+                        }
+                    }
+                }
+            }
+
+            requestAnimationFrame(runStickerPhysicsLoop);
+        }
+
+        // Start Physics Engine
+        requestAnimationFrame(runStickerPhysicsLoop);
 
         // Micro-interactions for tactile feel on all cards and buttons
         document.querySelectorAll('.neubrutal-card').forEach(card => {
