@@ -90,6 +90,31 @@
             color: white;
         }
 
+        /* Interactive Draggable & Throwing Physics Stickers */
+        .draggable-sticker {
+            position: fixed;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            z-index: 45;
+            will-change: transform, left, top;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+            transform-origin: center center;
+            transition: box-shadow 0.15s ease;
+        }
+
+        .draggable-sticker:hover {
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+        }
+
+        .draggable-sticker:active,
+        .draggable-sticker.is-dragging {
+            cursor: grabbing;
+            box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 1);
+            z-index: 60 !important;
+        }
+
         :root {
             --color-primary: #FACC15;
             --on-black-text: #FACC15;
@@ -126,55 +151,6 @@
             overflow: hidden;
             white-space: nowrap;
             transition: color 0.2s ease;
-        }
-
-        /* 100% Contrast & Visibility Guarantee when user picks Dark/Black themes */
-        body.theme-dark {
-            color: #FFFFFF !important;
-        }
-
-        body.theme-dark .heavy-text.bg-black {
-            border-color: #FFFFFF !important;
-            box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.9) !important;
-            color: #FFFFFF !important;
-        }
-
-        body.theme-dark a.bg-black {
-            border-color: #FFFFFF !important;
-            box-shadow: 6px 6px 0px 0px rgba(255, 255, 255, 0.8) !important;
-        }
-
-        body.theme-dark a.bg-black h2,
-        body.theme-dark a.bg-black .heavy-text {
-            color: #FFFFFF !important;
-        }
-
-        body.theme-dark .marquee-container {
-            border-bottom-color: rgba(255, 255, 255, 0.5) !important;
-            color: #FFFFFF !important;
-        }
-
-        body.theme-dark p.text-black\/70 {
-            color: rgba(255, 255, 255, 0.9) !important;
-        }
-
-        body.theme-dark .neubrutal-card {
-            border-color: #FFFFFF !important;
-            box-shadow: 6px 6px 0px 0px rgba(255, 255, 255, 0.9) !important;
-        }
-
-        body.theme-dark .neubrutal-card:active {
-            box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.9) !important;
-        }
-
-        body.theme-dark footer .border-4 {
-            border-color: #FFFFFF !important;
-            box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.9) !important;
-        }
-
-        body.theme-dark #profile-image {
-            border-color: #FFFFFF !important;
-            box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.9) !important;
         }
 
         .marquee-content {
@@ -380,19 +356,25 @@
         </button>
     </nav>
 
-    <!-- Theme Color Picker Control (Fixed Top Right) -->
-    <div class="fixed top-4 right-16 flex items-center gap-2 z-50">
-        <label id="btn-theme" for="color-picker-input"
-            class="neubrutal-card p-3 bg-white hover:bg-black hover:text-white transition-colors cursor-pointer flex items-center justify-center m-0 select-none"
-            title="Pick Any Theme Color">
-            <span class="material-symbols-outlined font-bold text-xl block">palette</span>
-            <input type="color" id="color-picker-input" value="#FACC15" class="sr-only" />
-        </label>
-        <button id="btn-reset-theme"
-            class="neubrutal-card px-2 py-3 bg-white hover:bg-accent-pink font-mono font-bold text-xs transition-colors focus:outline-none hidden"
-            title="Reset to Default Yellow">
-            RESET
-        </button>
+
+    <!-- Interactive Draggable Neubrutalist Stickers -->
+    <div id="stickers-container">
+        <div class="draggable-sticker sticker-label bg-accent-pink text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[-6deg] text-xs sm:text-sm tracking-wide"
+            style="top: 76px; left: 16px; --rot: -6deg;" title="Drag me anywhere!">
+            <span>⚡ MERN STACK</span>
+        </div>
+        <div class="draggable-sticker sticker-label bg-accent-blue text-white font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[8deg] text-xs sm:text-sm tracking-wide"
+            style="top: 130px; right: 20px; --rot: 8deg;" title="Drag me anywhere!">
+            <span>🚀 OPEN TO WORK</span>
+        </div>
+        <div class="draggable-sticker sticker-label bg-white text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[-4deg] text-xs sm:text-sm tracking-wide"
+            style="bottom: 120px; left: 18px; --rot: -4deg;" title="Drag me anywhere!">
+            <span>📍 INDORE, MP</span>
+        </div>
+        <div class="draggable-sticker sticker-label bg-[#22c55e] text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 rotate-[5deg] text-xs sm:text-sm tracking-wide hidden sm:block"
+            style="bottom: 150px; right: 24px; --rot: 5deg;" title="Drag me anywhere!">
+            <span>☕ 100% CAFFEINE</span>
+        </div>
     </div>
 
     <!-- Sound Toggle Button (Fixed Top Right) -->
@@ -708,86 +690,169 @@
         // Toast Notification helper
         const toast = document.getElementById('toast');
 
-        // Custom Color Picker Functionality
-        const colorPickerInput = document.getElementById('color-picker-input');
-        const btnResetTheme = document.getElementById('btn-reset-theme');
-        const DEFAULT_PRIMARY = '#FACC15';
+        // Draggable & Throwing Physics Stickers System (Inertia, Bounce, Spin & Sound)
+        let topZIndex = 50;
+        document.querySelectorAll('.draggable-sticker').forEach(sticker => {
+            let isDragging = false;
+            let currentX = 0, currentY = 0;
+            let startPointerX = 0, startPointerY = 0;
+            let dragStartLeft = 0, dragStartTop = 0;
 
-        // Helper: Calculate relative luminance from hex color
-        function getLuminance(hex) {
-            const cleanHex = hex.replace('#', '');
-            const r = parseInt(cleanHex.substring(0, 2), 16) / 255;
-            const g = parseInt(cleanHex.substring(2, 4), 16) / 255;
-            const b = parseInt(cleanHex.substring(4, 6), 16) / 255;
-            const a = [r, g, b].map(v => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
-            return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
-        }
+            // Physics velocity tracking
+            let vx = 0, vy = 0;
+            let lastPointerX = 0, lastPointerY = 0;
+            let lastTime = 0;
+            let animationFrameId = null;
 
-        function setCustomThemeColor(hexColor, save = true) {
-            document.documentElement.style.setProperty('--color-primary', hexColor);
-            colorPickerInput.value = hexColor;
+            // Rotation & Spin physics
+            let currentRotation = parseFloat(sticker.style.getPropertyValue('--rot') || '0') || 0;
+            let angularVelocity = 0;
 
-            const lum = getLuminance(hexColor);
-
-            // If background is very dark (luminance < 0.2, e.g. dark navy, charcoal, pure black)
-            if (lum < 0.25) {
-                // When black background is picked, text inside black boxes must be brilliant white or vibrant neon
-                document.documentElement.style.setProperty('--on-black-text', '#FFFFFF');
-                document.body.classList.add('theme-dark');
-            } else {
-                // When normal/bright background is picked, keep the matching custom color inside black badges
-                document.documentElement.style.setProperty('--on-black-text', hexColor);
-                document.body.classList.remove('theme-dark');
+            function applyTransform(scale = 1) {
+                sticker.style.transform = `scale(${scale}) rotate(${currentRotation}deg)`;
             }
 
-            if (hexColor.toUpperCase() !== DEFAULT_PRIMARY) {
-                btnResetTheme.classList.remove('hidden');
-            } else {
-                btnResetTheme.classList.add('hidden');
-            }
+            // Sync initial transform
+            applyTransform(1);
 
-            if (save) {
-                localStorage.setItem('customThemeColor', hexColor);
-            }
-        }
+            sticker.addEventListener('pointerdown', (e) => {
+                isDragging = true;
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
 
-        // Restore saved custom color if present
-        const savedCustomColor = localStorage.getItem('customThemeColor');
-        if (savedCustomColor) {
-            setCustomThemeColor(savedCustomColor, false);
-        }
+                sticker.classList.add('is-dragging');
+                topZIndex++;
+                sticker.style.zIndex = topZIndex;
 
-        // Color input live change
-        colorPickerInput.addEventListener('input', (e) => {
-            setCustomThemeColor(e.target.value, true);
-        });
+                const rect = sticker.getBoundingClientRect();
+                currentX = rect.left;
+                currentY = rect.top;
+                dragStartLeft = rect.left;
+                dragStartTop = rect.top;
 
-        // Click on theme label sound
-        colorPickerInput.addEventListener('change', () => {
-            playClickSound();
-            toast.innerText = `COLOR: ${colorPickerInput.value.toUpperCase()} 🎨`;
-            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+                sticker.style.left = `${currentX}px`;
+                sticker.style.top = `${currentY}px`;
+                sticker.style.right = 'auto';
+                sticker.style.bottom = 'auto';
 
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-[-100px]', 'opacity-0');
-            }, 1500);
-        });
+                startPointerX = e.clientX;
+                startPointerY = e.clientY;
+                lastPointerX = e.clientX;
+                lastPointerY = e.clientY;
+                lastTime = performance.now();
+                vx = 0;
+                vy = 0;
+                angularVelocity = 0;
 
-        // Reset to default cyber yellow
-        btnResetTheme.addEventListener('click', () => {
-            setCustomThemeColor(DEFAULT_PRIMARY, true);
-            localStorage.removeItem('customThemeColor');
-            playClickSound();
-            toast.innerText = 'RESET TO CYBER YELLOW ⚡';
-            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+                applyTransform(1.15);
+                sticker.setPointerCapture(e.pointerId);
+                playClickSound();
+            });
 
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-[-100px]', 'opacity-0');
-            }, 1500);
+            sticker.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+
+                const now = performance.now();
+                const dt = Math.max(1, now - lastTime);
+
+                // Calculate instantaneous velocity (pixels per frame ~16ms)
+                vx = ((e.clientX - lastPointerX) / dt) * 16;
+                vy = ((e.clientY - lastPointerY) / dt) * 16;
+
+                lastPointerX = e.clientX;
+                lastPointerY = e.clientY;
+                lastTime = now;
+
+                const dx = e.clientX - startPointerX;
+                const dy = e.clientY - startPointerY;
+
+                currentX = dragStartLeft + dx;
+                currentY = dragStartTop + dy;
+
+                // Tilt sticker dynamically according to movement speed
+                const speedTilt = Math.max(-25, Math.min(25, vx * 0.8));
+                sticker.style.transform = `scale(1.15) rotate(${currentRotation + speedTilt}deg)`;
+
+                sticker.style.left = `${currentX}px`;
+                sticker.style.top = `${currentY}px`;
+            });
+
+            const stopDrag = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                sticker.classList.remove('is-dragging');
+                try {
+                    sticker.releasePointerCapture(e.pointerId);
+                } catch (_) {}
+
+                // Throwing inertia & bouncing physics loop
+                const friction = 0.94; // air resistance
+                const bounceRestitution = 0.72; // elasticity when hitting walls
+
+                // Spin sticker based on throw speed
+                angularVelocity = (vx * 0.5) + (Math.random() * 2 - 1);
+
+                function stepPhysics() {
+                    currentX += vx;
+                    currentY += vy;
+                    currentRotation += angularVelocity;
+
+                    vx *= friction;
+                    vy *= friction;
+                    angularVelocity *= 0.95;
+
+                    const maxX = window.innerWidth - sticker.offsetWidth - 8;
+                    const maxY = window.innerHeight - sticker.offsetHeight - 8;
+                    let hasBounced = false;
+
+                    // Bounce off left / right walls
+                    if (currentX <= 8) {
+                        currentX = 8;
+                        vx = -vx * bounceRestitution;
+                        angularVelocity = -angularVelocity * 0.8;
+                        hasBounced = true;
+                    } else if (currentX >= maxX) {
+                        currentX = maxX;
+                        vx = -vx * bounceRestitution;
+                        angularVelocity = -angularVelocity * 0.8;
+                        hasBounced = true;
+                    }
+
+                    // Bounce off top / bottom walls
+                    if (currentY <= 8) {
+                        currentY = 8;
+                        vy = -vy * bounceRestitution;
+                        hasBounced = true;
+                    } else if (currentY >= maxY) {
+                        currentY = maxY;
+                        vy = -vy * bounceRestitution;
+                        hasBounced = true;
+                    }
+
+                    // Play bounce audio feedback if hit with high velocity
+                    if (hasBounced && (Math.abs(vx) > 3 || Math.abs(vy) > 3)) {
+                        playClickSound();
+                    }
+
+                    sticker.style.left = `${currentX}px`;
+                    sticker.style.top = `${currentY}px`;
+                    applyTransform(1);
+
+                    // Continue physics simulation until velocity dies down
+                    if (Math.abs(vx) > 0.15 || Math.abs(vy) > 0.15 || Math.abs(angularVelocity) > 0.05) {
+                        animationFrameId = requestAnimationFrame(stepPhysics);
+                    } else {
+                        animationFrameId = null;
+                    }
+                }
+
+                animationFrameId = requestAnimationFrame(stepPhysics);
+            };
+
+            sticker.addEventListener('pointerup', stopDrag);
+            sticker.addEventListener('pointercancel', stopDrag);
         });
 
         // Micro-interactions for tactile feel on all cards and buttons
