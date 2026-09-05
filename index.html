@@ -335,6 +335,21 @@
                         DEV INSIGHTS &amp; TUTORIALS // ON LINKEDIN</p>
                 </a>
             </div>
+            <!-- Interactive Tech Roadmap & Timeline Card -->
+            <div class="relative ml-2">
+                <a id="btn-roadmap"
+                    class="neubrutal-card block p-6 bg-white hover:bg-primary group transition-colors -rotate-1 cursor-pointer"
+                    title="View Dev Journey &amp; Career Roadmap">
+                    <div class="flex justify-between items-center mb-1">
+                        <h2 class="heavy-text text-4xl">ROADMAP</h2>
+                        <span
+                            class="material-symbols-outlined text-4xl group-hover:rotate-45 transition-transform">timeline</span>
+                    </div>
+                    <p
+                        class="font-mono text-[11px] md:text-xs opacity-90 uppercase font-bold tracking-widest text-black">
+                        DEV JOURNEY // 2023 ➔ 2026</p>
+                </a>
+            </div>
             <!-- Resume Download Card -->
             <div class="relative -ml-2">
                 <a class="neubrutal-card block p-6 bg-[#22c55e] hover:bg-white group transition-colors rotate-[0.5deg]"
@@ -641,6 +656,95 @@
                 <span>OPEN FULL LINKEDIN ACTIVITY</span>
                 <span class="material-symbols-outlined text-base">arrow_forward</span>
             </a>
+        </div>
+    </div>
+
+    <!-- Career Roadmap & Tech Journey Modal -->
+    <div id="roadmap-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+        <div
+            class="neubrutal-card w-full max-w-xl bg-white p-5 md:p-6 flex flex-col gap-4 border-4 border-black shadow-brutal-lg max-h-[88vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b-4 border-black pb-3">
+                <div>
+                    <span class="sticker-label sticker-pink text-[10px] mb-1">STORY &amp; MILESTONES</span>
+                    <h3 class="heavy-text text-3xl md:text-4xl text-black leading-none">TECH ROADMAP</h3>
+                </div>
+                <button id="btn-close-roadmap"
+                    class="text-black hover:text-accent-pink font-mono font-black text-2xl focus:outline-none p-1"
+                    title="Close">
+                    [X]
+                </button>
+            </div>
+
+            <p class="font-mono text-xs text-gray-700">
+                A timeline of my journey from learning computer science to architecting full-stack web platforms.
+            </p>
+
+            <!-- Timeline Elements -->
+            <div class="relative border-l-4 border-black ml-4 pl-6 space-y-6 my-2 font-mono">
+                <!-- Milestone 1: 2023 -->
+                <div class="relative group">
+                    <div class="absolute -left-[35px] top-1 w-5 h-5 bg-accent-blue border-3 border-black shadow-sm"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="sticker-label bg-black text-primary text-[10px]">2023 // GENESIS</span>
+                        <span class="text-xs font-bold text-gray-500">Core CS &amp; Web Foundations</span>
+                    </div>
+                    <h4 class="font-black text-sm md:text-base mt-1 text-black">Mastering the Core Stack</h4>
+                    <p class="text-xs text-gray-700 mt-1 leading-relaxed">
+                        Deep-dived into JavaScript (ES6+), Algorithms, Data Structures, and building responsive UI components with clean semantic HTML &amp; modern CSS.
+                    </p>
+                </div>
+
+                <!-- Milestone 2: 2024 -->
+                <div class="relative group">
+                    <div class="absolute -left-[35px] top-1 w-5 h-5 bg-[#22c55e] border-3 border-black shadow-sm"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="sticker-label bg-[#22c55e] text-black text-[10px]">MARCH 2024</span>
+                        <span class="text-xs font-bold text-gray-500">B.Tech Graduation</span>
+                    </div>
+                    <h4 class="font-black text-sm md:text-base mt-1 text-black">Graduated in Information Technology</h4>
+                    <p class="text-xs text-gray-700 mt-1 leading-relaxed">
+                        Completed B.Tech (IT) at Sage University, Indore with <strong class="text-black">7.46 CGPA / 91.2 SGPA</strong>. Built full-stack database-backed applications as final year projects.
+                    </p>
+                </div>
+
+                <!-- Milestone 3: 2024-2025 -->
+                <div class="relative group">
+                    <div class="absolute -left-[35px] top-1 w-5 h-5 bg-primary border-3 border-black shadow-sm"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="sticker-label bg-primary text-black text-[10px]">2024 - 2025 // PRODUCTION</span>
+                        <span class="text-xs font-bold text-gray-500">1.5+ Years Exp</span>
+                    </div>
+                    <h4 class="font-black text-sm md:text-base mt-1 text-black">Shipped Real-World Client Platforms</h4>
+                    <p class="text-xs text-gray-700 mt-1 leading-relaxed">
+                        Engineered production systems for clients: <strong class="text-black">RR World</strong> (Global Trade Portal), <strong class="text-black">Ground7</strong> (Live Sports Turf Booking), and <strong class="text-black">IndoreAirportCab</strong> (Travel &amp; Logistics CMS).
+                    </p>
+                </div>
+
+                <!-- Milestone 4: Present -->
+                <div class="relative group">
+                    <div class="absolute -left-[35px] top-1 w-5 h-5 bg-accent-pink border-3 border-black animate-pulse shadow-sm"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="sticker-label bg-accent-pink text-black text-[10px]">PRESENT // 2026</span>
+                        <span class="text-xs font-bold text-green-700">● Available For Hire</span>
+                    </div>
+                    <h4 class="font-black text-sm md:text-base mt-1 text-black">Scaling Full-Stack &amp; AI-Native Architecture</h4>
+                    <p class="text-xs text-gray-700 mt-1 leading-relaxed">
+                        Open for high-impact Full-Stack, React, or Node.js development roles worldwide (Remote or On-site in India).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <div class="flex gap-2 pt-2 border-t-2 border-dashed border-black">
+                <a href="portfolio/index.html" class="neubrutal-card flex-1 p-2.5 bg-black text-primary font-mono font-bold text-center text-xs hover:bg-accent-blue hover:text-white transition-colors">
+                    EXPLORE FULL PROJECTS ➔
+                </a>
+                <a href="mailto:abzeeshankhan30@gmail.com" class="neubrutal-card p-2.5 bg-accent-pink text-black font-mono font-bold text-center text-xs hover:bg-white transition-colors">
+                    LET'S TALK ✉️
+                </a>
+            </div>
         </div>
     </div>
 
@@ -1416,6 +1520,34 @@
             });
         });
 
+        // Career Roadmap Modal Feature
+        const btnRoadmap = document.getElementById('btn-roadmap');
+        const roadmapModal = document.getElementById('roadmap-modal');
+        const btnCloseRoadmap = document.getElementById('btn-close-roadmap');
+
+        if (btnRoadmap && roadmapModal) {
+            btnRoadmap.addEventListener('click', (e) => {
+                e.preventDefault();
+                roadmapModal.classList.remove('hidden');
+                if (typeof playClickSound === 'function') playClickSound();
+            });
+
+            const closeRoadmapModal = () => {
+                roadmapModal.classList.add('hidden');
+                if (typeof playClickSound === 'function') playClickSound();
+            };
+
+            if (btnCloseRoadmap) {
+                btnCloseRoadmap.addEventListener('click', closeRoadmapModal);
+            }
+
+            roadmapModal.addEventListener('click', (e) => {
+                if (e.target === roadmapModal) {
+                    closeRoadmapModal();
+                }
+            });
+        }
+
         // Escape key closes all modals
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -1423,6 +1555,7 @@
                 if (!emailModal.classList.contains('hidden')) closeEmailModal();
                 if (!inquiryModal.classList.contains('hidden')) closeInquiryModal();
                 if (postsModal && !postsModal.classList.contains('hidden')) postsModal.classList.add('hidden');
+                if (roadmapModal && !roadmapModal.classList.contains('hidden')) roadmapModal.classList.add('hidden');
             }
         });
 
