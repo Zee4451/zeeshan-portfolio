@@ -90,13 +90,59 @@
             color: white;
         }
 
+        :root {
+            --color-primary: #FACC15;
+            --color-accent-pink: #F472B6;
+            --color-accent-blue: #3B82F6;
+        }
+
+        body[data-theme="cyber-green"] {
+            --color-primary: #22C55E;
+            --color-accent-pink: #3B82F6;
+            --color-accent-blue: #A855F7;
+        }
+
+        body[data-theme="tokyo-pink"] {
+            --color-primary: #F472B6;
+            --color-accent-pink: #FACC15;
+            --color-accent-blue: #06B6D4;
+        }
+
+        body[data-theme="electric-cyan"] {
+            --color-primary: #06B6D4;
+            --color-accent-pink: #F472B6;
+            --color-accent-blue: #FACC15;
+        }
+
+        body {
+            background-color: var(--color-primary);
+            transition: background-color 0.25s ease;
+        }
+
+        .bg-primary {
+            background-color: var(--color-primary) !important;
+        }
+
+        .text-primary {
+            color: var(--color-primary) !important;
+        }
+
+        .hover\:bg-primary:hover {
+            background-color: var(--color-primary) !important;
+        }
+
+        .hover\:text-primary:hover {
+            color: var(--color-primary) !important;
+        }
+
         .marquee-container {
             background: black;
-            color: #FACC15;
+            color: var(--color-primary);
             padding: 4px 0;
             border-bottom: 2px solid black;
             overflow: hidden;
             white-space: nowrap;
+            transition: color 0.25s ease;
         }
 
         .marquee-content {
@@ -301,6 +347,13 @@
             <span class="material-symbols-outlined font-bold text-2xl block">alternate_email</span>
         </button>
     </nav>
+
+    <!-- Theme Switcher Button (Fixed Top Right) -->
+    <button id="btn-theme"
+        class="fixed top-4 right-16 neubrutal-card p-3 bg-white hover:bg-black hover:text-white transition-colors focus:outline-none z-50 flex items-center gap-1"
+        title="Switch Retro Theme">
+        <span class="material-symbols-outlined font-bold text-xl block">palette</span>
+    </button>
 
     <!-- Sound Toggle Button (Fixed Top Right) -->
     <button id="btn-sound"
@@ -612,6 +665,55 @@
             }
         });
 
+        // Toast Notification helper
+        const toast = document.getElementById('toast');
+
+        // Theme Switcher Functionality (Retro Neubrutalist Colorways)
+        const btnTheme = document.getElementById('btn-theme');
+        const themes = [
+            { id: 'default', name: 'CYBER YELLOW ⚡', icon: 'palette' },
+            { id: 'cyber-green', name: 'MATRIX GREEN 🟩', icon: 'terminal' },
+            { id: 'tokyo-pink', name: 'TOKYO PINK 🌸', icon: 'flare' },
+            { id: 'electric-cyan', name: 'NEON CYAN 💎', icon: 'water_drop' }
+        ];
+
+        let currentThemeIndex = 0;
+        const savedTheme = localStorage.getItem('userTheme');
+        if (savedTheme) {
+            const idx = themes.findIndex(t => t.id === savedTheme);
+            if (idx !== -1) {
+                currentThemeIndex = idx;
+                applyTheme(themes[currentThemeIndex].id, false);
+            }
+        }
+
+        function applyTheme(themeId, notify = true) {
+            if (themeId === 'default') {
+                document.body.removeAttribute('data-theme');
+            } else {
+                document.body.setAttribute('data-theme', themeId);
+            }
+            localStorage.setItem('userTheme', themeId);
+
+            if (notify) {
+                const current = themes[currentThemeIndex];
+                toast.innerText = `THEME: ${current.name}`;
+                toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-[-100px]', 'opacity-0');
+                }, 1500);
+            }
+        }
+
+        btnTheme.addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            applyTheme(themes[currentThemeIndex].id, true);
+            playClickSound();
+        });
+
         // Micro-interactions for tactile feel on all cards and buttons
         document.querySelectorAll('.neubrutal-card').forEach(card => {
             card.addEventListener('mousedown', () => {
@@ -634,7 +736,6 @@
 
         // Share Feature
         const btnShare = document.getElementById('btn-share');
-        const toast = document.getElementById('toast');
 
         btnShare.addEventListener('click', () => {
             const pageUrl = window.location.href;
