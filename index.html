@@ -92,6 +92,8 @@
 
         :root {
             --color-primary: #FACC15;
+            --on-black-text: #FACC15;
+            --on-page-text: #000000;
         }
 
         body {
@@ -103,8 +105,10 @@
             background-color: var(--color-primary) !important;
         }
 
-        .text-primary {
-            color: var(--color-primary) !important;
+        /* Text that appears inside black badge (e.g. ZEESHAN KHAN, HIRE ME, Marquee) */
+        .text-primary,
+        .marquee-container {
+            color: var(--on-black-text) !important;
         }
 
         .hover\:bg-primary:hover {
@@ -117,12 +121,60 @@
 
         .marquee-container {
             background: black;
-            color: var(--color-primary);
             padding: 4px 0;
             border-bottom: 2px solid black;
             overflow: hidden;
             white-space: nowrap;
             transition: color 0.2s ease;
+        }
+
+        /* 100% Contrast & Visibility Guarantee when user picks Dark/Black themes */
+        body.theme-dark {
+            color: #FFFFFF !important;
+        }
+
+        body.theme-dark .heavy-text.bg-black {
+            border-color: #FFFFFF !important;
+            box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.9) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.theme-dark a.bg-black {
+            border-color: #FFFFFF !important;
+            box-shadow: 6px 6px 0px 0px rgba(255, 255, 255, 0.8) !important;
+        }
+
+        body.theme-dark a.bg-black h2,
+        body.theme-dark a.bg-black .heavy-text {
+            color: #FFFFFF !important;
+        }
+
+        body.theme-dark .marquee-container {
+            border-bottom-color: rgba(255, 255, 255, 0.5) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.theme-dark p.text-black\/70 {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        body.theme-dark .neubrutal-card {
+            border-color: #FFFFFF !important;
+            box-shadow: 6px 6px 0px 0px rgba(255, 255, 255, 0.9) !important;
+        }
+
+        body.theme-dark .neubrutal-card:active {
+            box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.9) !important;
+        }
+
+        body.theme-dark footer .border-4 {
+            border-color: #FFFFFF !important;
+            box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.9) !important;
+        }
+
+        body.theme-dark #profile-image {
+            border-color: #FFFFFF !important;
+            box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.9) !important;
         }
 
         .marquee-content {
@@ -661,9 +713,32 @@
         const btnResetTheme = document.getElementById('btn-reset-theme');
         const DEFAULT_PRIMARY = '#FACC15';
 
+        // Helper: Calculate relative luminance from hex color
+        function getLuminance(hex) {
+            const cleanHex = hex.replace('#', '');
+            const r = parseInt(cleanHex.substring(0, 2), 16) / 255;
+            const g = parseInt(cleanHex.substring(2, 4), 16) / 255;
+            const b = parseInt(cleanHex.substring(4, 6), 16) / 255;
+            const a = [r, g, b].map(v => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+            return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+        }
+
         function setCustomThemeColor(hexColor, save = true) {
             document.documentElement.style.setProperty('--color-primary', hexColor);
             colorPickerInput.value = hexColor;
+
+            const lum = getLuminance(hexColor);
+
+            // If background is very dark (luminance < 0.2, e.g. dark navy, charcoal, pure black)
+            if (lum < 0.25) {
+                // When black background is picked, text inside black boxes must be brilliant white or vibrant neon
+                document.documentElement.style.setProperty('--on-black-text', '#FFFFFF');
+                document.body.classList.add('theme-dark');
+            } else {
+                // When normal/bright background is picked, keep the matching custom color inside black badges
+                document.documentElement.style.setProperty('--on-black-text', hexColor);
+                document.body.classList.remove('theme-dark');
+            }
 
             if (hexColor.toUpperCase() !== DEFAULT_PRIMARY) {
                 btnResetTheme.classList.remove('hidden');
