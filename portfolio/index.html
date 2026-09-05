@@ -188,11 +188,143 @@
         LINK COPIED TO CLIPBOARD! ⚡
     </div>
 
+    <!-- Email Options Modal -->
+    <div id="email-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+        <div
+            class="neubrutal-card w-full max-w-sm bg-white p-6 flex flex-col gap-4 border-4 border-black shadow-brutal-lg">
+            <h3 class="heavy-text text-3xl text-black">EMAIL ZEESHAN?</h3>
+            <p class="font-mono text-xs text-gray-700">Email address copied to clipboard! How would you like to send
+                your email?</p>
+            <div class="flex flex-col gap-3 mt-2">
+                <a id="btn-gmail-web" target="_blank"
+                    class="neubrutal-card p-3 bg-primary text-black font-mono font-bold text-center hover:bg-black hover:text-primary transition-colors cursor-pointer text-sm block">
+                    OPEN GMAIL (WEB)
+                </a>
+                <a id="btn-mail-app"
+                    class="neubrutal-card p-3 bg-accent-blue text-white font-mono font-bold text-center hover:bg-white hover:text-black transition-colors cursor-pointer text-sm block">
+                    USE DEFAULT MAIL APP
+                </a>
+                <button id="btn-close-email-modal"
+                    class="neubrutal-card p-3 bg-white text-black font-mono font-bold text-center hover:bg-accent-pink transition-colors focus:outline-none text-sm">
+                    CANCEL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LinkedIn Posts Modal -->
+    <div id="posts-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+        <div
+            class="neubrutal-card w-full max-w-xl bg-white p-5 md:p-6 flex flex-col gap-4 border-4 border-black shadow-brutal-lg max-h-[88vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b-4 border-black pb-3">
+                <div>
+                    <span class="sticker-label sticker-blue text-[10px] mb-1">LINKEDIN HIGHLIGHTS</span>
+                    <h3 class="heavy-text text-3xl md:text-4xl text-black leading-none">TECH POSTS</h3>
+                </div>
+                <button id="btn-close-posts"
+                    class="text-black hover:text-accent-pink font-mono font-black text-2xl focus:outline-none p-1"
+                    title="Close">
+                    [X]
+                </button>
+            </div>
+
+            <p class="font-mono text-xs text-gray-700">
+                Key learnings, architecture breakdowns, and web development insights from my daily work.
+            </p>
+
+            <!-- Posts List -->
+            <div class="space-y-4 my-1">
+                <!-- Post 1 (Real Embedded LinkedIn Post) -->
+                <div class="border-2 border-black p-3 bg-white shadow-sm flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between gap-2 mb-2">
+                        <span class="sticker-label bg-accent-pink text-black text-[9px]">PROBLEM SOLVING &middot; MINDSET</span>
+                        <span class="font-mono text-[10px] text-gray-500 font-bold">FEATURED REAL POST</span>
+                    </div>
+                    
+                    <div class="w-full overflow-hidden flex justify-center border border-black/20 my-1 bg-gray-50">
+                        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7326691566134161408?collapsed=1" height="520" width="100%" class="max-w-[504px] w-full" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center pt-3 mt-2 border-t border-dashed border-black/40">
+                        <span class="font-mono text-[11px] font-bold text-black">
+                            ⚡ Real Post on Debugging
+                        </span>
+                        <a href="https://www.linkedin.com/posts/zeeshankhan-tech_problemsolving-developermindset-debugging-activity-7326691567363084288-Siz0" target="_blank" rel="noopener noreferrer"
+                            class="font-mono font-bold text-xs bg-[#0A66C2] text-white hover:bg-black px-3 py-1.5 border border-black inline-flex items-center gap-1 transition-colors">
+                            Open on LinkedIn <span class="material-symbols-outlined text-xs">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Post 2 (Real Embedded LinkedIn Post) -->
+                <div class="border-2 border-black p-3 bg-white shadow-sm flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between gap-2 mb-2">
+                        <span class="sticker-label sticker-blue text-[9px]">AI-NATIVE &middot; FULL-STACK</span>
+                        <span class="font-mono text-[10px] text-gray-500 font-bold">FEATURED REAL POST</span>
+                    </div>
+
+                    <div class="w-full overflow-hidden flex justify-center border border-black/20 my-1 bg-gray-50">
+                        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7430534422241763328?collapsed=1" height="542" width="100%" class="max-w-[504px] w-full" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center pt-3 mt-2 border-t border-dashed border-black/40">
+                        <span class="font-mono text-[11px] font-bold text-black">
+                            🤖 AI-Native Development &amp; Architecture
+                        </span>
+                        <a href="https://www.linkedin.com/posts/zeeshankhan-tech_ainative-fullstackdeveloper-artificialintelligence-activity-7430534451337760768-Q_M6" target="_blank" rel="noopener noreferrer"
+                            class="font-mono font-bold text-xs bg-[#0A66C2] text-white hover:bg-black px-3 py-1.5 border border-black inline-flex items-center gap-1 transition-colors">
+                            Open on LinkedIn <span class="material-symbols-outlined text-xs">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Post 3 (Real Embedded LinkedIn Post) -->
+                <div class="border-2 border-black p-3 bg-white shadow-sm flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between gap-2 mb-2">
+                        <span class="sticker-label bg-[#22c55e] text-black text-[9px]">MERN STACK &middot; REACT.JS</span>
+                        <span class="font-mono text-[10px] text-gray-500 font-bold">FEATURED REAL POST</span>
+                    </div>
+
+                    <div class="w-full overflow-hidden flex justify-center border border-black/20 my-1 bg-gray-50">
+                        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7430343737764925440?collapsed=1" height="670" width="100%" class="max-w-[504px] w-full" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center pt-3 mt-2 border-t border-dashed border-black/40">
+                        <span class="font-mono text-[11px] font-bold text-black">
+                            💻 MERN Stack &amp; Web Development
+                        </span>
+                        <a href="https://www.linkedin.com/posts/zeeshankhan-tech_mernstack-fullstackdevelopment-reactjs-activity-7430343739342217216-Ff40" target="_blank" rel="noopener noreferrer"
+                            class="font-mono font-bold text-xs bg-[#0A66C2] text-white hover:bg-black px-3 py-1.5 border border-black inline-flex items-center gap-1 transition-colors">
+                            Open on LinkedIn <span class="material-symbols-outlined text-xs">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All CTA -->
+            <a href="https://www.linkedin.com/in/zeeshankhan-tech/recent-activity/all/" target="_blank" rel="noopener noreferrer"
+                class="neubrutal-card p-3 bg-primary text-black font-mono font-bold text-center hover:bg-black hover:text-primary transition-colors text-xs md:text-sm uppercase flex items-center justify-center gap-2">
+                <span>OPEN FULL LINKEDIN ACTIVITY</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Code Snippet Tooltip -->
+    <div id="code-tooltip"
+        class="hidden fixed bg-black text-green-400 font-mono text-xs p-3 rounded border-2 border-green-500 shadow-lg z-50 max-w-xs">
+        <pre id="code-content" class="whitespace-pre-wrap"></pre>
+    </div>
+
     <main class="relative z-10 max-w-[700px] mx-auto px-6 pt-20 pb-32">
         <!-- Profile Header (Asymmetric) -->
         <header class="relative my-12 flex flex-col items-start pt-4">
-            <div
-                class="relative w-40 h-40 border-4 border-black shadow-brutal bg-white overflow-hidden -rotate-3 hover:rotate-0 transition-transform mb-6">
+            <div id="profile-image"
+                class="relative w-40 h-40 border-4 border-black shadow-brutal bg-white overflow-hidden -rotate-3 hover:rotate-0 transition-transform mb-6 cursor-pointer"
+                title="Triple-click me for a secret fact!">
                 <img alt="Zeeshan Khan" class="w-full h-full object-cover grayscale contrast-125"
                     src="zeeshan-profile.png"
                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23F472B6%22/><text x=%2250%25%22 y=%2260%25%22 font-size=%2240%22 font-family=%22sans-serif%22 font-weight=%22bold%22 fill=%22black%22 text-anchor=%22middle%22>ZK</text></svg>';" />
@@ -209,10 +341,14 @@
                     JUNIOR FULL-STACK DEVELOPER // REACT + NODE.JS
                 </p>
                 <div class="flex gap-2 flex-wrap max-w-[500px]">
-                    <span class="sticker-label sticker-pink">React.js</span>
-                    <span class="sticker-label sticker-blue">Node.js</span>
-                    <span class="sticker-label sticker-green">Express.js</span>
-                    <span class="sticker-label sticker-purple">MongoDB</span>
+                    <span class="sticker-label sticker-pink code-snippet cursor-help"
+                        data-code="const App = () => <div>Hello World</div>;">React.js</span>
+                    <span class="sticker-label sticker-blue code-snippet cursor-help"
+                        data-code="const server = http.createServer((req, res) => { res.end('Hello'); });">Node.js</span>
+                    <span class="sticker-label sticker-green code-snippet cursor-help"
+                        data-code="app.get('/api', (req, res) => res.json({ msg: 'Hello' }));">Express.js</span>
+                    <span class="sticker-label sticker-purple code-snippet cursor-help"
+                        data-code="db.users.findOne({ name: 'Zeeshan' });">MongoDB</span>
                 </div>
                 <div class="flex gap-2 flex-wrap mt-4">
                     <a class="project-link project-link-code"
@@ -650,7 +786,25 @@
             </div>
 
             <div class="relative">
-                <a class="neubrutal-card block p-6 bg-accent-pink hover:bg-white group transition-colors -rotate-1"
+                <a id="btn-tech-posts"
+                    class="neubrutal-card block p-6 bg-white hover:bg-black hover:text-primary group transition-colors -rotate-1 cursor-pointer"
+                    href="https://www.linkedin.com/in/zeeshankhan-tech/recent-activity/all/"
+                    title="View LinkedIn Tech Posts">
+                    <div class="flex justify-between items-center mb-1">
+                        <h2 class="heavy-text text-4xl">TECH POSTS</h2>
+                        <span
+                            class="material-symbols-outlined text-4xl group-hover:-translate-y-2 transition-transform">article</span>
+                    </div>
+                    <p
+                        class="font-mono text-[11px] md:text-xs opacity-90 uppercase font-bold tracking-widest text-black group-hover:text-primary">
+                        DEV INSIGHTS &amp; ARCHITECTURE // ON LINKEDIN
+                    </p>
+                </a>
+            </div>
+
+            <div class="relative">
+                <a id="card-email"
+                    class="neubrutal-card block p-6 bg-accent-pink hover:bg-white group transition-colors -rotate-1 cursor-pointer"
                     href="mailto:abzeeshankhan30@gmail.com">
                     <div class="flex justify-between items-center mb-1">
                         <h2 class="heavy-text text-4xl">EMAIL ME</h2>
@@ -750,13 +904,18 @@
             title="LinkedIn">
             <span class="material-symbols-outlined font-bold text-xl md:text-2xl">share</span>
         </a>
-        <a class="neubrutal-card p-3 md:p-4 bg-white hover:bg-primary transition-colors shrink-0"
-            href="mailto:abzeeshankhan30@gmail.com" title="Email Me">
+        <button id="btn-email"
+            class="neubrutal-card p-3 md:p-4 bg-white hover:bg-primary transition-colors shrink-0 focus:outline-none"
+            title="Email Me">
             <span class="material-symbols-outlined font-bold text-xl md:text-2xl">alternate_email</span>
-        </a>
+        </button>
         <a class="neubrutal-card p-3 md:p-4 bg-white hover:bg-accent-pink transition-colors shrink-0"
             href="https://www.instagram.com/__honored_soul_?igsh=MzMxaG1iejV3ZWM0" target="_blank" rel="noopener noreferrer" title="Instagram">
             <span class="material-symbols-outlined font-bold text-xl md:text-2xl">photo_camera</span>
+        </a>
+        <a class="neubrutal-card p-3 md:p-4 bg-white hover:bg-accent-blue hover:text-white transition-colors shrink-0"
+            href="https://www.facebook.com/profile.php?id=100019321216087" target="_blank" rel="noopener noreferrer" title="Facebook">
+            <span class="material-symbols-outlined font-bold text-xl md:text-2xl">thumb_up</span>
         </a>
     </nav>
 
@@ -844,16 +1003,137 @@
             }, 2500);
         }
 
-        // Email copy-to-clipboard on email links
-        document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const email = 'abzeeshankhan30@gmail.com';
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(email).then(() => {
-                        showToast("EMAIL COPIED: abzeeshankhan30@gmail.com ✉️");
-                    }).catch(() => {});
+        // Email Feature (Clipboard Copy + Option Dialog with Pre-built Templates)
+        const emailModal = document.getElementById('email-modal');
+        const btnCloseEmailModal = document.getElementById('btn-close-email-modal');
+        const btnGmailWeb = document.getElementById('btn-gmail-web');
+        const btnMailApp = document.getElementById('btn-mail-app');
+
+        const emailAddress = "abzeeshankhan30@gmail.com";
+        const emailSubject = encodeURIComponent("Inquiry regarding Full-Stack Development");
+        const emailBody = encodeURIComponent("Hi Zeeshan,\n\nI saw your portfolio page and would love to connect with you regarding your development work.\n\nBest regards,\n[Your Name]");
+
+        // Set pre-built template href links dynamically
+        btnGmailWeb.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailAddress}&su=${emailSubject}&body=${emailBody}`;
+        btnMailApp.href = `mailto:${emailAddress}?subject=${emailSubject}&body=${emailBody}`;
+
+        function triggerEmailFlow(e) {
+            if (e) e.preventDefault();
+            playClickSound();
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(emailAddress).then(() => {
+                    showToast("EMAIL COPIED: abzeeshankhan30@gmail.com ✉️");
+                }).catch(() => {});
+            }
+
+            emailModal.classList.remove('hidden');
+        }
+
+        const btnEmail = document.getElementById('btn-email');
+        const cardEmail = document.getElementById('card-email');
+        if (btnEmail) btnEmail.addEventListener('click', triggerEmailFlow);
+        if (cardEmail) cardEmail.addEventListener('click', triggerEmailFlow);
+
+        // Close Email Modal actions
+        const closeEmailModal = () => {
+            emailModal.classList.add('hidden');
+        };
+
+        if (btnCloseEmailModal) btnCloseEmailModal.addEventListener('click', closeEmailModal);
+        emailModal.addEventListener('click', (e) => {
+            if (e.target === emailModal) closeEmailModal();
+        });
+
+        // LinkedIn Tech Posts Modal
+        const btnTechPosts = document.getElementById('btn-tech-posts');
+        const postsModal = document.getElementById('posts-modal');
+        const btnClosePosts = document.getElementById('btn-close-posts');
+
+        if (btnTechPosts && postsModal) {
+            btnTechPosts.addEventListener('click', (e) => {
+                e.preventDefault();
+                playClickSound();
+                postsModal.classList.remove('hidden');
+            });
+        }
+
+        if (btnClosePosts && postsModal) {
+            btnClosePosts.addEventListener('click', () => {
+                playClickSound();
+                postsModal.classList.add('hidden');
+            });
+
+            postsModal.addEventListener('click', (e) => {
+                if (e.target === postsModal) {
+                    postsModal.classList.add('hidden');
                 }
             });
+        }
+
+        // Code Snippet Tooltips
+        const codeSnippets = document.querySelectorAll('.code-snippet');
+        const codeTooltip = document.getElementById('code-tooltip');
+        const codeContent = document.getElementById('code-content');
+
+        if (codeSnippets && codeTooltip && codeContent) {
+            codeSnippets.forEach(snippet => {
+                snippet.addEventListener('mouseenter', () => {
+                    const code = snippet.getAttribute('data-code');
+                    codeContent.textContent = code;
+                    codeTooltip.classList.remove('hidden');
+
+                    const rect = snippet.getBoundingClientRect();
+                    codeTooltip.style.left = Math.min(rect.left, window.innerWidth - 300) + 'px';
+                    codeTooltip.style.top = (rect.bottom + 10) + 'px';
+                });
+
+                snippet.addEventListener('mouseleave', () => {
+                    codeTooltip.classList.add('hidden');
+                });
+            });
+        }
+
+        // Triple-click easter egg on profile image
+        const profileImage = document.getElementById('profile-image');
+        let clickCount = 0;
+        let clickTimer;
+
+        if (profileImage) {
+            profileImage.addEventListener('click', () => {
+                clickCount++;
+                clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 500);
+
+                if (clickCount === 3) {
+                    clickCount = 0;
+                    showHiddenBio();
+                }
+            });
+        }
+
+        function showHiddenBio() {
+            const hiddenFacts = [
+                "🎮 Fun fact: I've debugged code at 3 AM more times than I'd like to admit!",
+                "☕ Coffee-powered developer: 5 cups a day keeps the bugs away!",
+                "🚀 Secret: My first project was a broken calculator - still proud of it!",
+                "💡 I believe clean code is like poetry - sometimes it rhymes!",
+                "🔥 Hot take: Tabs > Spaces (don't @ me)",
+                "⚡ I once fixed a production bug with a single semicolon. True story!"
+            ];
+
+            const randomFact = hiddenFacts[Math.floor(Math.random() * hiddenFacts.length)];
+            showToast(randomFact);
+        }
+
+        // Escape key closes modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (emailModal && !emailModal.classList.contains('hidden')) closeEmailModal();
+                if (postsModal && !postsModal.classList.contains('hidden')) postsModal.classList.add('hidden');
+            }
         });
 
         // Interactive Project Filtering
