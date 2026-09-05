@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
     <title>Zeeshan Khan | Full-Stack Developer Portfolio</title>
     <meta name="description"
         content="Zeeshan Khan — Full-Stack Developer specializing in React.js, Node.js, Express.js & MongoDB. 1.5+ years of experience building fast, beautiful web apps from Indore, India." />
@@ -53,6 +53,13 @@
         } catch (_e) { }
     </script>
     <style>
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            position: relative;
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -214,7 +221,7 @@
     </style>
 </head>
 
-<body class="bg-primary selection:bg-accent-pink selection:text-white antialiased">
+<body class="bg-primary selection:bg-accent-pink selection:text-white antialiased min-h-screen overflow-x-hidden w-full max-w-full">
     <!-- Top Ticker Bar -->
     <div class="fixed top-0 w-full z-50 marquee-container">
         <div class="marquee-content font-mono text-xs md:text-sm tracking-tighter">
