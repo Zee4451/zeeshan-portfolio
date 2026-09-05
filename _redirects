@@ -1,0 +1,2 @@
+# Netlify redirect rules: cleanly route clean URLs
+/portfolio    /portfolio/index.html   200

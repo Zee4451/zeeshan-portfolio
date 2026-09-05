@@ -14,6 +14,7 @@
     <meta property="og:image" content="zeeshan-profile.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
         rel="stylesheet" />
@@ -119,15 +120,16 @@
     <!-- Top Ticker Bar -->
     <div class="fixed top-0 w-full z-50 marquee-container">
         <div class="marquee-content font-mono text-xs md:text-sm tracking-tighter">
-            BUILDING THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 // 01011010 01000101 01000101 01010011 01001000 01000001 01001110 // BUILDING
-            THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 // ...---... // ...- // ... // ...- // .... // .- // -. // 01011010 01000101 01000101 01010011 01001000 01000001 01001110 //
+            BUILDING THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 // 01011010
+            01000101 01000101 01010011 01001000 01000001 01001110 // BUILDING
+            THE FUTURE // REACT // WEBGL // THREE.JS // NO SLEEP // JUST CODE // DEV.FLOW // 2025 // ...---... // ...-
+            // ... // ...- // .... // .- // -. // 01011010 01000101 01000101 01010011 01001000 01000001 01001110 //
         </div>
     </div>
     <main class="relative z-10 max-w-[640px] mx-auto px-6 pt-24 pb-52">
         <!-- Profile Header (Asymmetric) -->
         <header class="relative mb-20 flex flex-col items-start pt-4">
-            <div
-                id="profile-image"
+            <div id="profile-image"
                 class="relative w-36 h-36 sm:w-44 sm:h-44 border-4 border-black shadow-brutal bg-white overflow-hidden -rotate-3 hover:rotate-0 transition-transform mb-8 cursor-pointer">
                 <img alt="Zeeshan Khan" class="w-full h-full object-cover grayscale contrast-125"
                     src="zeeshan-profile.png" />
@@ -145,14 +147,19 @@
                 <p class="font-mono text-[11px] sm:text-sm text-black/70 mb-4 italic">I build fast, beautiful web apps
                     from Indore 🇮🇳</p>
                 <div class="flex gap-2 flex-wrap">
-                    <span class="sticker-label code-snippet" data-code="const App = () => <div>Hello World</div>;">REACT.JS</span>
-                    <span class="sticker-label sticker-blue code-snippet" data-code="const server = http.createServer((req, res) => { res.end('Hello'); });">NODE.JS</span>
-                    <span class="sticker-label code-snippet" data-code="app.get('/api', (req, res) => res.json({ msg: 'Hello' }));">EXPRESS.JS</span>
-                    <span class="sticker-label sticker-blue code-snippet" data-code="db.users.findOne({ name: 'Zeeshan' });">MONGODB</span>
+                    <span class="sticker-label code-snippet"
+                        data-code="const App = () => <div>Hello World</div>;">REACT.JS</span>
+                    <span class="sticker-label sticker-blue code-snippet"
+                        data-code="const server = http.createServer((req, res) => { res.end('Hello'); });">NODE.JS</span>
+                    <span class="sticker-label code-snippet"
+                        data-code="app.get('/api', (req, res) => res.json({ msg: 'Hello' }));">EXPRESS.JS</span>
+                    <span class="sticker-label sticker-blue code-snippet"
+                        data-code="db.users.findOne({ name: 'Zeeshan' });">MONGODB</span>
                 </div>
 
                 <!-- Code Snippet Tooltip -->
-                <div id="code-tooltip" class="hidden fixed bg-black text-green-400 font-mono text-xs p-3 rounded border-2 border-green-500 shadow-lg z-50 max-w-xs">
+                <div id="code-tooltip"
+                    class="hidden fixed bg-black text-green-400 font-mono text-xs p-3 rounded border-2 border-green-500 shadow-lg z-50 max-w-xs">
                     <pre id="code-content" class="whitespace-pre-wrap"></pre>
                 </div>
                 <!-- Social Media Links -->
@@ -199,7 +206,7 @@
         <section class="space-y-6">
             <div class="relative">
                 <a class="neubrutal-card block p-6 bg-white hover:bg-accent-blue hover:text-white group transition-colors"
-                    href="portfolio-coming-soon.html">
+                    href="portfolio/index.html">
                     <div class="flex justify-between items-center mb-1">
                         <h2 class="heavy-text text-4xl">PORTFOLIO</h2>
                         <span
@@ -224,22 +231,24 @@
                 </a>
             </div>
             <div class="relative mr-6">
-                <a class="neubrutal-card block p-6 bg-white hover:bg-black hover:text-primary group transition-colors rotate-1"
-                    href="blog-coming-soon.html">
+                <a id="btn-tech-posts"
+                    class="neubrutal-card block p-6 bg-white hover:bg-black hover:text-primary group transition-colors rotate-1 cursor-pointer"
+                    href="https://www.linkedin.com/in/zeeshankhan-tech/recent-activity/all/"
+                    title="View LinkedIn Tech Posts">
                     <div class="flex justify-between items-center mb-1">
-                        <h2 class="heavy-text text-4xl">TECH BLOG</h2>
+                        <h2 class="heavy-text text-4xl">TECH POSTS</h2>
                         <span
-                            class="material-symbols-outlined text-4xl group-hover:-translate-y-2 transition-transform">edit_square</span>
+                            class="material-symbols-outlined text-4xl group-hover:-translate-y-2 transition-transform">article</span>
                     </div>
                     <p
                         class="font-mono text-[11px] md:text-xs opacity-90 uppercase font-bold tracking-widest text-black group-hover:text-primary">
-                        Rants &amp; Tutorials</p>
+                        DEV INSIGHTS &amp; TUTORIALS // ON LINKEDIN</p>
                 </a>
             </div>
             <!-- Resume Download Card -->
             <div class="relative -ml-2">
                 <a class="neubrutal-card block p-6 bg-[#22c55e] hover:bg-white group transition-colors rotate-[0.5deg]"
-                    href="Zeeshan-Resume (3).pdf" download>
+                    href="zeeshan-resume.pdf" download="Zeeshan-Khan-Resume.pdf">
                     <div class="flex justify-between items-center mb-1">
                         <h2 class="heavy-text text-4xl text-white group-hover:text-black">RESUME</h2>
                         <span
@@ -417,6 +426,109 @@
         </div>
     </div>
 
+    <!-- LinkedIn Posts Modal -->
+    <div id="posts-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+        <div
+            class="neubrutal-card w-full max-w-xl bg-white p-5 md:p-6 flex flex-col gap-4 border-4 border-black shadow-brutal-lg max-h-[88vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b-4 border-black pb-3">
+                <div>
+                    <span class="sticker-label sticker-blue text-[10px] mb-1">LINKEDIN HIGHLIGHTS</span>
+                    <h3 class="heavy-text text-3xl md:text-4xl text-black leading-none">TECH POSTS</h3>
+                </div>
+                <button id="btn-close-posts"
+                    class="text-black hover:text-accent-pink font-mono font-black text-2xl focus:outline-none p-1"
+                    title="Close">
+                    [X]
+                </button>
+            </div>
+
+            <p class="font-mono text-xs text-gray-700">
+                Key learnings, architecture breakdowns, and web development insights from my daily work.
+            </p>
+
+            <!-- Posts List -->
+            <div class="space-y-4 my-1">
+                <!-- Post 1 (Real Embedded LinkedIn Post) -->
+                <div class="border-2 border-black p-3 bg-white shadow-sm flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between gap-2 mb-2">
+                        <span class="sticker-label bg-accent-pink text-black text-[9px]">PROBLEM SOLVING &middot; MINDSET</span>
+                        <span class="font-mono text-[10px] text-gray-500 font-bold">FEATURED REAL POST</span>
+                    </div>
+                    
+                    <!-- Official LinkedIn Embed -->
+                    <div class="w-full overflow-hidden flex justify-center border border-black/20 my-1 bg-gray-50">
+                        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7326691566134161408?collapsed=1" height="520" width="100%" class="max-w-[504px] w-full" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center pt-3 mt-2 border-t border-dashed border-black/40">
+                        <span class="font-mono text-[11px] font-bold text-black">
+                            ⚡ Real Post on Debugging
+                        </span>
+                        <a href="https://www.linkedin.com/posts/zeeshankhan-tech_problemsolving-developermindset-debugging-activity-7326691567363084288-Siz0" target="_blank" rel="noopener noreferrer"
+                            class="font-mono font-bold text-xs bg-[#0A66C2] text-white hover:bg-black px-3 py-1.5 border border-black inline-flex items-center gap-1 transition-colors">
+                            Open on LinkedIn <span class="material-symbols-outlined text-xs">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Post 2 (Real Embedded LinkedIn Post) -->
+                <div class="border-2 border-black p-3 bg-white shadow-sm flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between gap-2 mb-2">
+                        <span class="sticker-label sticker-blue text-[9px]">AI-NATIVE &middot; FULL-STACK</span>
+                        <span class="font-mono text-[10px] text-gray-500 font-bold">FEATURED REAL POST</span>
+                    </div>
+
+                    <!-- Official LinkedIn Embed -->
+                    <div class="w-full overflow-hidden flex justify-center border border-black/20 my-1 bg-gray-50">
+                        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7430534422241763328?collapsed=1" height="542" width="100%" class="max-w-[504px] w-full" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center pt-3 mt-2 border-t border-dashed border-black/40">
+                        <span class="font-mono text-[11px] font-bold text-black">
+                            🤖 AI-Native Development &amp; Architecture
+                        </span>
+                        <a href="https://www.linkedin.com/posts/zeeshankhan-tech_ainative-fullstackdeveloper-artificialintelligence-activity-7430534451337760768-Q_M6" target="_blank" rel="noopener noreferrer"
+                            class="font-mono font-bold text-xs bg-[#0A66C2] text-white hover:bg-black px-3 py-1.5 border border-black inline-flex items-center gap-1 transition-colors">
+                            Open on LinkedIn <span class="material-symbols-outlined text-xs">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Post 3 (Real Embedded LinkedIn Post) -->
+                <div class="border-2 border-black p-3 bg-white shadow-sm flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between gap-2 mb-2">
+                        <span class="sticker-label bg-[#22c55e] text-black text-[9px]">MERN STACK &middot; REACT.JS</span>
+                        <span class="font-mono text-[10px] text-gray-500 font-bold">FEATURED REAL POST</span>
+                    </div>
+
+                    <!-- Official LinkedIn Embed -->
+                    <div class="w-full overflow-hidden flex justify-center border border-black/20 my-1 bg-gray-50">
+                        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7430343737764925440?collapsed=1" height="670" width="100%" class="max-w-[504px] w-full" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center pt-3 mt-2 border-t border-dashed border-black/40">
+                        <span class="font-mono text-[11px] font-bold text-black">
+                            💻 MERN Stack &amp; Web Development
+                        </span>
+                        <a href="https://www.linkedin.com/posts/zeeshankhan-tech_mernstack-fullstackdevelopment-reactjs-activity-7430343739342217216-Ff40" target="_blank" rel="noopener noreferrer"
+                            class="font-mono font-bold text-xs bg-[#0A66C2] text-white hover:bg-black px-3 py-1.5 border border-black inline-flex items-center gap-1 transition-colors">
+                            Open on LinkedIn <span class="material-symbols-outlined text-xs">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All CTA -->
+            <a href="https://www.linkedin.com/in/zeeshankhan-tech/recent-activity/all/" target="_blank" rel="noopener noreferrer"
+                class="neubrutal-card p-3 bg-primary text-black font-mono font-bold text-center hover:bg-black hover:text-primary transition-colors text-xs md:text-sm uppercase flex items-center justify-center gap-2">
+                <span>OPEN FULL LINKEDIN ACTIVITY</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast"
         class="fixed top-12 left-1/2 -translate-x-1/2 z-50 bg-accent-pink text-black font-mono font-bold px-6 py-3 border-4 border-black shadow-brutal translate-y-[-100px] opacity-0 pointer-events-none transition-all duration-300">
@@ -448,42 +560,42 @@
 
         function playClickSound() {
             if (!soundEnabled) return;
-            
+
             initAudio();
-            
+
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-            
+
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
+
             oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
             oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
-            
+
             gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            
+
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.1);
         }
 
         function playHoverSound() {
             if (!soundEnabled) return;
-            
+
             initAudio();
-            
+
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-            
+
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
+
             oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
             oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.05);
-            
+
             gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-            
+
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.05);
         }
@@ -501,7 +613,7 @@
             soundEnabled = !soundEnabled;
             localStorage.setItem('soundEnabled', soundEnabled);
             updateSoundButton();
-            
+
             if (soundEnabled) {
                 initAudio();
                 playClickSound();
@@ -671,6 +783,34 @@
                 });
         });
 
+        // LinkedIn Posts Modal Feature
+        const btnTechPosts = document.getElementById('btn-tech-posts');
+        const postsModal = document.getElementById('posts-modal');
+        const btnClosePosts = document.getElementById('btn-close-posts');
+
+        if (btnTechPosts && postsModal) {
+            btnTechPosts.addEventListener('click', (e) => {
+                e.preventDefault();
+                postsModal.classList.remove('hidden');
+                if (typeof playClickSound === 'function') playClickSound();
+            });
+
+            const closePostsModal = () => {
+                postsModal.classList.add('hidden');
+                if (typeof playClickSound === 'function') playClickSound();
+            };
+
+            if (btnClosePosts) {
+                btnClosePosts.addEventListener('click', closePostsModal);
+            }
+
+            postsModal.addEventListener('click', (e) => {
+                if (e.target === postsModal) {
+                    closePostsModal();
+                }
+            });
+        }
+
         // Terminal Dialog Feature
         const btnTerminal = document.getElementById('btn-terminal');
         const terminalModal = document.getElementById('terminal-modal');
@@ -716,7 +856,7 @@
                 const code = snippet.getAttribute('data-code');
                 codeContent.textContent = code;
                 codeTooltip.classList.remove('hidden');
-                
+
                 const rect = snippet.getBoundingClientRect();
                 codeTooltip.style.left = rect.left + 'px';
                 codeTooltip.style.top = (rect.bottom + 10) + 'px';
@@ -743,9 +883,9 @@
 
         profileImage.addEventListener('click', () => {
             clickCount++;
-            
+
             clearTimeout(clickTimer);
-            
+
             clickTimer = setTimeout(() => {
                 clickCount = 0;
             }, 500);
@@ -765,13 +905,13 @@
                 "🔥 Hot take: Tabs > Spaces (don't @ me)",
                 "⚡ I once fixed a production bug with a single semicolon. True story!"
             ];
-            
+
             const randomFact = hiddenFacts[Math.floor(Math.random() * hiddenFacts.length)];
-            
+
             toast.innerText = randomFact;
             toast.classList.remove('translate-y-[-100px]', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-            
+
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-[-100px]', 'opacity-0');
