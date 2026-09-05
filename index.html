@@ -93,8 +93,6 @@
         /* Ultra-Smooth 60FPS Hardware-Accelerated Stickers */
         .draggable-sticker {
             position: fixed;
-            top: 0;
-            left: 0;
             cursor: grab;
             user-select: none;
             -webkit-user-select: none;
@@ -404,20 +402,24 @@
 
 
     <!-- Interactive Draggable Neubrutalist Stickers -->
-    <div id="stickers-container">
+    <div id="stickers-container" class="relative">
         <div class="draggable-sticker sticker-label bg-accent-pink text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide"
+            style="top: 76px; left: 16px; transform: rotate(-6deg);"
             data-init-top="76" data-init-left="16" data-rot="-6" title="Drag me anywhere!">
             <span>⚡ MERN STACK</span>
         </div>
         <div class="draggable-sticker sticker-label bg-accent-blue text-white font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide"
+            style="top: 130px; right: 20px; transform: rotate(8deg);"
             data-init-top="130" data-init-right="20" data-rot="8" title="Drag me anywhere!">
             <span>🚀 OPEN TO WORK</span>
         </div>
         <div class="draggable-sticker sticker-label bg-white text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide"
+            style="bottom: 120px; left: 18px; transform: rotate(-4deg);"
             data-init-bottom="120" data-init-left="18" data-rot="-4" title="Drag me anywhere!">
             <span>📍 INDORE, MP</span>
         </div>
-        <div class="draggable-sticker sticker-label bg-[#22c55e] text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide hidden sm:block"
+        <div class="draggable-sticker sticker-label bg-[#22c55e] text-black font-extrabold border-2 border-black shadow-brutal px-3 py-1.5 text-xs sm:text-sm tracking-wide"
+            style="bottom: 150px; right: 24px; transform: rotate(5deg);"
             data-init-bottom="150" data-init-right="24" data-rot="5" title="Drag me anywhere!">
             <span>☕ 100% CAFFEINE</span>
         </div>
@@ -709,10 +711,55 @@
             oscillator.frequency.exponentialRampToValueAtTime(60, audioContext.currentTime + 0.12);
 
             const vol = Math.min(0.25, 0.08 * intensity);
-            gainNode.gain.setValueAtTime(vol, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.12);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.12);
+        }
 
-                    // ============================================================
+        function playHoverSound() {
+            if (!soundEnabled) return;
+
+            initAudio();
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.05);
+
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.05);
+        }
+
+        // Update sound button icon based on state
+        function updateSoundButton() {
+            soundIcon.textContent = soundEnabled ? 'volume_up' : 'volume_off';
+        }
+
+        // Initialize sound button state
+        updateSoundButton();
+
+        // Sound toggle functionality
+        btnSound.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            updateSoundButton();
+
+            if (soundEnabled) {
+                initAudio();
+                playClickSound();
+            }
+        });
+
+        // Toast Notification helper
+        const toast = document.getElementById('toast');
+
+        // ============================================================
         // ULTRA-PERFORMANT 60FPS GPU STICKER ENGINE (MOBILE & DESKTOP)
         // ============================================================
         let topZIndex = 60;
@@ -782,9 +829,9 @@
                 const initRight = el.getAttribute('data-init-right');
                 const baseRot = parseFloat(el.getAttribute('data-rot') || '0');
 
-                // Compute exact layout position
+                // Read dimensions
                 const rect = el.getBoundingClientRect();
-                const w = rect.width || 120;
+                const w = rect.width || 130;
                 const h = rect.height || 36;
 
                 let posX = 20;
@@ -799,6 +846,13 @@
                 // Keep safely inside viewport
                 posX = Math.max(10, Math.min(winW - w - 10, posX));
                 posY = Math.max(10, Math.min(winH - h - 10, posY));
+
+                // Clear inline right and bottom so left and top strictly control position
+                el.style.right = 'auto';
+                el.style.bottom = 'auto';
+                el.style.left = `${posX}px`;
+                el.style.top = `${posY}px`;
+                el.style.transform = `rotate(${baseRot}deg)`;
 
                 const item = {
                     el,
@@ -822,7 +876,6 @@
                 };
 
                 stickers.push(item);
-                el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0) rotate(${item.rot}deg)`;
 
                 // Unified pointer event handlers
                 el.addEventListener('pointerdown', (e) => {
@@ -835,9 +888,11 @@
                     const r = el.getBoundingClientRect();
                     item.w = r.width;
                     item.h = r.height;
+                    item.x = r.left;
+                    item.y = r.top;
 
-                    item.grabOffsetX = e.clientX - item.x;
-                    item.grabOffsetY = e.clientY - item.y;
+                    item.grabOffsetX = e.clientX - r.left;
+                    item.grabOffsetY = e.clientY - r.top;
 
                     item.lastPointerX = e.clientX;
                     item.lastPointerY = e.clientY;
@@ -880,7 +935,9 @@
                     item.lastMoveTime = now;
 
                     const dragTilt = Math.max(-15, Math.min(15, dx * 0.4));
-                    el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0) scale(1.08) rotate(${item.baseRot + dragTilt}deg)`;
+                    el.style.left = `${item.x}px`;
+                    el.style.top = `${item.y}px`;
+                    el.style.transform = `scale(1.08) rotate(${item.baseRot + dragTilt}deg)`;
                 });
 
                 const onRelease = (e) => {
@@ -1022,7 +1079,9 @@
                             playBonkSound(1);
                         }
 
-                        s.el.style.transform = `translate3d(${s.x}px, ${s.y}px, 0) rotate(${s.rot}deg)`;
+                        s.el.style.left = `${s.x}px`;
+                        s.el.style.top = `${s.y}px`;
+                        s.el.style.transform = `rotate(${s.rot}deg)`;
                     }
                 } else {
                     activeMotion = true;
@@ -1055,16 +1114,20 @@
                             s1.y -= ny * overlap * 0.5;
                             s2.x += nx * overlap * 0.5;
                             s2.y += ny * overlap * 0.5;
-                            s1.el.style.transform = `translate3d(${s1.x}px, ${s1.y}px, 0) rotate(${s1.rot}deg)`;
-                            s2.el.style.transform = `translate3d(${s2.x}px, ${s2.y}px, 0) rotate(${s2.rot}deg)`;
+                            s1.el.style.left = `${s1.x}px`;
+                            s1.el.style.top = `${s1.y}px`;
+                            s2.el.style.left = `${s2.x}px`;
+                            s2.el.style.top = `${s2.y}px`;
                         } else if (s1.isDragging && !s2.isDragging) {
                             s2.x += nx * overlap;
                             s2.y += ny * overlap;
-                            s2.el.style.transform = `translate3d(${s2.x}px, ${s2.y}px, 0) rotate(${s2.rot}deg)`;
+                            s2.el.style.left = `${s2.x}px`;
+                            s2.el.style.top = `${s2.y}px`;
                         } else if (!s1.isDragging && s2.isDragging) {
                             s1.x -= nx * overlap;
                             s1.y -= ny * overlap;
-                            s1.el.style.transform = `translate3d(${s1.x}px, ${s1.y}px, 0) rotate(${s1.rot}deg)`;
+                            s1.el.style.left = `${s1.x}px`;
+                            s1.el.style.top = `${s1.y}px`;
                         }
 
                         const kx = s1.vx - s2.vx;
