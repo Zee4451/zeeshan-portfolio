@@ -175,6 +175,19 @@
         <span class="material-symbols-outlined text-base">arrow_back</span> LINKTREE
     </a>
 
+    <!-- Sound Toggle Button (Fixed Top Right) -->
+    <button id="btn-sound"
+        class="fixed top-12 right-4 neubrutal-card p-2.5 bg-white hover:bg-accent-blue hover:text-white transition-colors focus:outline-none z-40"
+        title="Toggle Sound Effects">
+        <span class="material-symbols-outlined font-bold text-xl block">volume_off</span>
+    </button>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed top-14 left-1/2 -translate-x-1/2 z-50 bg-accent-pink text-black font-mono font-bold px-6 py-3 border-4 border-black shadow-brutal translate-y-[-120px] opacity-0 pointer-events-none transition-all duration-300 text-xs sm:text-sm">
+        LINK COPIED TO CLIPBOARD! ⚡
+    </div>
+
     <main class="relative z-10 max-w-[700px] mx-auto px-6 pt-20 pb-32">
         <!-- Profile Header (Asymmetric) -->
         <header class="relative my-12 flex flex-col items-start pt-4">
@@ -334,15 +347,34 @@
 
         <!-- Projects Mentioned -->
         <section class="mb-10">
-            <h2
-                class="heavy-text text-3xl md:text-4xl mb-6 bg-black text-white px-4 py-1 inline-block border-4 border-black shadow-brutal rotate-1">
-                PROJECTS
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <h2
+                    class="heavy-text text-3xl md:text-4xl bg-black text-white px-4 py-1 inline-block border-4 border-black shadow-brutal rotate-1">
+                    PROJECTS
+                </h2>
+
+                <!-- Category Filter Tabs -->
+                <div class="flex gap-2 flex-wrap font-mono text-xs font-bold">
+                    <button class="project-filter-btn px-3 py-1 border-2 border-black bg-black text-primary shadow-brutal transition-all"
+                        data-filter="all">ALL (4)</button>
+                    <button class="project-filter-btn px-3 py-1 border-2 border-black bg-white text-black hover:bg-accent-pink shadow-brutal transition-all"
+                        data-filter="freelance">FREELANCE</button>
+                    <button class="project-filter-btn px-3 py-1 border-2 border-black bg-white text-black hover:bg-accent-blue hover:text-white shadow-brutal transition-all"
+                        data-filter="ecommerce">E-COMMERCE</button>
+                    <button class="project-filter-btn px-3 py-1 border-2 border-black bg-white text-black hover:bg-accent-green shadow-brutal transition-all"
+                        data-filter="mern">MERN APPS</button>
+                </div>
+            </div>
+
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Project 1: IndoreAirportCabBooking -->
-                <div class="neubrutal-card p-6 bg-white flex flex-col justify-between">
+                <div class="project-card neubrutal-card p-6 bg-white flex flex-col justify-between transition-all"
+                    data-category="freelance mern">
                     <div>
-                        <span class="sticker-label bg-accent-purple text-white text-[9px] mb-2">Freelance / Live</span>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="sticker-label bg-accent-purple text-white text-[9px]">Freelance / Live</span>
+                            <span class="font-mono text-[10px] font-bold bg-green-100 text-green-800 border border-green-700 px-1.5 py-0.5">● PRODUCTION</span>
+                        </div>
                         <h3 class="heavy-text text-xl mb-1">Indore Airport Cab</h3>
                         <p class="font-mono text-xs text-gray-600 mb-4">MERN Cab Booking Website</p>
                         <p class="font-mono text-xs text-gray-700 leading-relaxed mb-4">
@@ -368,9 +400,13 @@
                 </div>
 
                 <!-- Project 2: Avnistick & Waltzer -->
-                <div class="neubrutal-card p-6 bg-white flex flex-col justify-between">
+                <div class="project-card neubrutal-card p-6 bg-white flex flex-col justify-between transition-all"
+                    data-category="ecommerce mern">
                     <div>
-                        <span class="sticker-label bg-accent-blue text-white text-[9px] mb-2">E-Commerce</span>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="sticker-label bg-accent-blue text-white text-[9px]">E-Commerce</span>
+                            <span class="font-mono text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-700 px-1.5 py-0.5">● MULTI-STORE</span>
+                        </div>
                         <h3 class="heavy-text text-xl mb-1">Avnistick &amp; Waltzer</h3>
                         <p class="font-mono text-xs text-gray-600 mb-4">MERN E-commerce Platforms</p>
                         <p class="font-mono text-xs text-gray-700 leading-relaxed mb-4">
@@ -400,9 +436,13 @@
                 </div>
 
                 <!-- Project 3: The Tradification -->
-                <div class="neubrutal-card p-6 bg-white flex flex-col justify-between">
+                <div class="project-card neubrutal-card p-6 bg-white flex flex-col justify-between transition-all"
+                    data-category="ecommerce freelance">
                     <div>
-                        <span class="sticker-label bg-accent-pink text-black text-[9px] mb-2">Ed-Tech</span>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="sticker-label bg-accent-pink text-black text-[9px]">Ed-Tech / Course</span>
+                            <span class="font-mono text-[10px] font-bold bg-yellow-100 text-yellow-800 border border-yellow-700 px-1.5 py-0.5">● PAYMENTS</span>
+                        </div>
                         <h3 class="heavy-text text-xl mb-1">The Tradification</h3>
                         <p class="font-mono text-xs text-gray-600 mb-4">Trading Course Platform</p>
                         <p class="font-mono text-xs text-gray-700 leading-relaxed mb-4">
@@ -428,9 +468,13 @@
                 </div>
 
                 <!-- Project 4: Ground7, comNGO & RR World -->
-                <div class="neubrutal-card p-6 bg-white flex flex-col justify-between">
+                <div class="project-card neubrutal-card p-6 bg-white flex flex-col justify-between transition-all"
+                    data-category="mern">
                     <div>
-                        <span class="sticker-label bg-accent-green text-black text-[9px] mb-2">MERN Suite</span>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="sticker-label bg-accent-green text-black text-[9px]">MERN Suite</span>
+                            <span class="font-mono text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-700 px-1.5 py-0.5">● CLIENT SUITE</span>
+                        </div>
                         <h3 class="heavy-text text-xl mb-1">Ground7 &amp; NGO Hub</h3>
                         <p class="font-mono text-xs text-gray-600 mb-4">Turf Booking &amp; Import-Export</p>
                         <p class="font-mono text-xs text-gray-700 leading-relaxed mb-4">
@@ -623,7 +667,7 @@
 
             <div class="relative">
                 <a class="neubrutal-card block p-6 bg-white hover:bg-accent-pink group transition-colors -rotate-1"
-                    href="https://www.instagram.com/zee_khan4u" target="_blank" rel="noopener noreferrer">
+                    href="https://www.instagram.com/__honored_soul_?igsh=MzMxaG1iejV3ZWM0" target="_blank" rel="noopener noreferrer">
                     <div class="flex justify-between items-center mb-1">
                         <h2 class="heavy-text text-4xl">INSTAGRAM</h2>
                         <span
@@ -631,7 +675,7 @@
                     </div>
                     <p
                         class="font-mono text-[11px] md:text-xs opacity-90 uppercase font-bold tracking-widest text-black">
-                        @zee_khan4u
+                        @__honored_soul_
                     </p>
                 </a>
             </div>
@@ -711,25 +755,151 @@
             <span class="material-symbols-outlined font-bold text-xl md:text-2xl">alternate_email</span>
         </a>
         <a class="neubrutal-card p-3 md:p-4 bg-white hover:bg-accent-pink transition-colors shrink-0"
-            href="https://www.instagram.com/zee_khan4u" target="_blank" rel="noopener noreferrer" title="Instagram">
+            href="https://www.instagram.com/__honored_soul_?igsh=MzMxaG1iejV3ZWM0" target="_blank" rel="noopener noreferrer" title="Instagram">
             <span class="material-symbols-outlined font-bold text-xl md:text-2xl">photo_camera</span>
         </a>
     </nav>
 
     <script>
-        // Micro-interactions for tactile feel
-        document.querySelectorAll('.neubrutal-card').forEach(card => {
+        // Sound Effects System using Web Audio API
+        let audioContext = null;
+        let soundEnabled = localStorage.getItem('soundEnabled') === 'true';
+
+        const btnSound = document.getElementById('btn-sound');
+        const soundIcon = btnSound.querySelector('span');
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playClickSound() {
+            if (!soundEnabled) return;
+            initAudio();
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        function playHoverSound() {
+            if (!soundEnabled) return;
+            initAudio();
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.05);
+
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.05);
+        }
+
+        function updateSoundButton() {
+            soundIcon.textContent = soundEnabled ? 'volume_up' : 'volume_off';
+        }
+
+        updateSoundButton();
+
+        btnSound.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            updateSoundButton();
+
+            if (soundEnabled) {
+                initAudio();
+                playClickSound();
+            }
+        });
+
+        // Toast Notification helper
+        const toast = document.getElementById('toast');
+        function showToast(msg) {
+            toast.innerText = msg;
+            toast.classList.remove('translate-y-[-120px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-120px]', 'opacity-0');
+            }, 2500);
+        }
+
+        // Email copy-to-clipboard on email links
+        document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const email = 'abzeeshankhan30@gmail.com';
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(email).then(() => {
+                        showToast("EMAIL COPIED: abzeeshankhan30@gmail.com ✉️");
+                    }).catch(() => {});
+                }
+            });
+        });
+
+        // Interactive Project Filtering
+        const filterBtns = document.querySelectorAll('.project-filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                playClickSound();
+                const filter = btn.getAttribute('data-filter');
+
+                // Active button styling
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-black', 'text-primary');
+                    b.classList.add('bg-white', 'text-black');
+                });
+                btn.classList.remove('bg-white', 'text-black');
+                btn.classList.add('bg-black', 'text-primary');
+
+                // Filter cards with smooth fade
+                projectCards.forEach(card => {
+                    const categories = card.getAttribute('data-category') || '';
+                    if (filter === 'all' || categories.includes(filter)) {
+                        card.style.display = 'flex';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translate(0, 0) scale(1)';
+                        }, 10);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 150);
+                    }
+                });
+            });
+        });
+
+        // Micro-interactions for tactile feel on all cards and buttons
+        document.querySelectorAll('.neubrutal-card, .project-link').forEach(card => {
             card.addEventListener('mousedown', () => {
-                card.style.transform = 'translate(4px, 4px)';
-                card.style.boxShadow = '2px 2px 0px 0px rgba(0,0,0,1)';
+                playClickSound();
             });
-            card.addEventListener('mouseup', () => {
-                card.style.transform = '';
-                card.style.boxShadow = '';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-                card.style.boxShadow = '';
+            card.addEventListener('mouseenter', () => {
+                playHoverSound();
             });
         });
     </script>
