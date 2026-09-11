@@ -320,6 +320,83 @@
         </div>
     </div>
 
+    <!-- Project Interactive Preview Modal -->
+    <div id="project-preview-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+        <div
+            class="neubrutal-card w-full max-w-xl bg-white p-5 md:p-6 flex flex-col gap-4 border-4 border-black shadow-brutal-lg max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-start border-b-4 border-black pb-3">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="preview-badge-status" class="sticker-label text-[10px] bg-accent-purple text-white">FREELANCE / LIVE</span>
+                        <span id="preview-badge-category" class="font-mono text-[10px] font-bold bg-green-100 text-green-800 border border-green-700 px-1.5 py-0.5">● PRODUCTION</span>
+                    </div>
+                    <h3 id="preview-title" class="heavy-text text-2xl md:text-3xl text-black leading-tight">Project Title</h3>
+                    <p id="preview-subtitle" class="font-mono text-xs text-gray-600 font-bold mt-0.5">Sub title</p>
+                </div>
+                <button id="btn-close-preview"
+                    class="text-black hover:text-accent-pink font-mono font-black text-2xl focus:outline-none p-1 shrink-0"
+                    title="Close Preview">
+                    [X]
+                </button>
+            </div>
+
+            <!-- Preview Visual Mockup Banner -->
+            <div class="border-3 border-black bg-gray-900 text-primary p-4 shadow-sm relative overflow-hidden">
+                <div class="flex items-center justify-between border-b border-gray-700 pb-2 mb-3">
+                    <div class="flex gap-1.5 items-center">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span>
+                        <span id="preview-mock-url" class="font-mono text-[11px] text-gray-300 ml-2 truncate max-w-[200px] sm:max-w-[320px]">https://domain.com</span>
+                    </div>
+                    <span class="sticker-label bg-accent-pink text-black text-[9px] py-0.5 px-1.5 font-mono font-bold">INTERACTIVE</span>
+                </div>
+                <div class="font-mono text-xs space-y-1.5">
+                    <p class="text-white font-bold" id="preview-headline">// SYSTEM ARCHITECTURE &amp; SCOPE:</p>
+                    <p class="text-gray-300 text-[11px] sm:text-xs leading-relaxed" id="preview-description">
+                        Project description...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Architecture & Highlights Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+                <div class="p-3 bg-[#fef08a]/40 border-2 border-black">
+                    <h5 class="font-extrabold text-black mb-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">verified</span> KEY HIGHLIGHTS:
+                    </h5>
+                    <ul id="preview-highlights" class="space-y-1 text-gray-800 text-[11px] list-disc list-inside">
+                        <li>Highlight 1</li>
+                    </ul>
+                </div>
+                <div class="p-3 bg-[#dbeafe] border-2 border-black">
+                    <h5 class="font-extrabold text-black mb-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">construction</span> TECH STACK:
+                    </h5>
+                    <div id="preview-tech-tags" class="flex gap-1.5 flex-wrap mt-1">
+                        <!-- tags -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action CTAs -->
+            <div class="flex flex-wrap gap-2 pt-3 border-t-2 border-dashed border-black">
+                <a id="preview-btn-live" href="#" target="_blank" rel="noopener noreferrer"
+                    class="neubrutal-card flex-1 min-w-[140px] p-2.5 bg-[#22c55e] hover:bg-white text-black font-mono font-bold text-center text-xs flex items-center justify-center gap-1.5 transition-colors">
+                    <span class="material-symbols-outlined text-base">open_in_new</span>
+                    <span>VISIT LIVE DEMO</span>
+                </a>
+                <a id="preview-btn-code" href="#" target="_blank" rel="noopener noreferrer"
+                    class="neubrutal-card flex-1 min-w-[140px] p-2.5 bg-[#3b82f6] hover:bg-black text-white font-mono font-bold text-center text-xs flex items-center justify-center gap-1.5 transition-colors">
+                    <span class="material-symbols-outlined text-base">code</span>
+                    <span>VIEW SOURCE REPO</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Code Snippet Tooltip -->
     <div id="code-tooltip"
         class="hidden fixed bg-black text-green-400 font-mono text-xs p-3 rounded border-2 border-green-500 shadow-lg z-50 max-w-xs">
@@ -531,6 +608,10 @@
                         <span class="sticker-label text-[9px]">Express</span>
                     </div>
                     <div class="flex gap-2 flex-wrap mt-4 pt-3 border-t-2 border-dashed border-black">
+                        <button class="project-link bg-primary text-black hover:bg-black hover:text-primary transition-colors cursor-pointer btn-preview-project"
+                            data-project="indore-airport-cab">
+                            <span class="material-symbols-outlined text-sm">visibility</span> PREVIEW
+                        </button>
                         <a class="project-link project-link-live"
                             href="https://indoreairportcabbooking.com/" target="_blank" rel="noopener noreferrer">
                             <span class="material-symbols-outlined text-sm">open_in_new</span> Live Demo
@@ -563,6 +644,10 @@
                         <span class="sticker-label text-[9px]">MongoDB</span>
                     </div>
                     <div class="flex gap-2 flex-wrap mt-4 pt-3 border-t-2 border-dashed border-black">
+                        <button class="project-link bg-primary text-black hover:bg-black hover:text-primary transition-colors cursor-pointer btn-preview-project"
+                            data-project="avnistick-waltzer">
+                            <span class="material-symbols-outlined text-sm">visibility</span> PREVIEW
+                        </button>
                         <a class="project-link project-link-live"
                             href="https://theavnistick.com/" target="_blank" rel="noopener noreferrer">
                             <span class="material-symbols-outlined text-sm">open_in_new</span> Avnistick
@@ -599,6 +684,10 @@
                         <span class="sticker-label text-[9px]">APIs</span>
                     </div>
                     <div class="flex gap-2 flex-wrap mt-4 pt-3 border-t-2 border-dashed border-black">
+                        <button class="project-link bg-primary text-black hover:bg-black hover:text-primary transition-colors cursor-pointer btn-preview-project"
+                            data-project="the-tradification">
+                            <span class="material-symbols-outlined text-sm">visibility</span> PREVIEW
+                        </button>
                         <a class="project-link project-link-live"
                             href="https://thetradification.com/" target="_blank" rel="noopener noreferrer">
                             <span class="material-symbols-outlined text-sm">open_in_new</span> Live Demo
@@ -631,6 +720,10 @@
                         <span class="sticker-label text-[9px]">Import/Export</span>
                     </div>
                     <div class="flex gap-2 flex-wrap mt-4 pt-3 border-t-2 border-dashed border-black">
+                        <button class="project-link bg-primary text-black hover:bg-black hover:text-primary transition-colors cursor-pointer btn-preview-project"
+                            data-project="ground7-suite">
+                            <span class="material-symbols-outlined text-sm">visibility</span> PREVIEW
+                        </button>
                         <a class="project-link project-link-code"
                             href="https://github.com/Zee4451/alaukik-official" target="_blank" rel="noopener noreferrer">
                             <span class="material-symbols-outlined text-sm">code</span> View on GitHub
@@ -1215,11 +1308,159 @@
             showToast(randomFact);
         }
 
+        // Project Preview Modal System
+        const projectData = {
+            'indore-airport-cab': {
+                title: 'Indore Airport Cab',
+                subtitle: 'MERN Travel & Fleet Booking Website',
+                status: 'FREELANCE / LIVE',
+                category: '● PRODUCTION',
+                url: 'https://indoreairportcabbooking.com/',
+                description: 'End-to-end cab reservation and fleet dispatch platform engineered for high-converting travel logistics. Built with real-time route fare estimations, instantaneous WhatsApp alert dispatch, and custom SEO structured schema.',
+                highlights: [
+                    'Dynamic automated route & distance fare calculator algorithm',
+                    'Zero-lag animations powered by Framer Motion & Tailwind CSS',
+                    'SEO-optimized landing pages ranking on local search queries',
+                    'Instant SMS/WhatsApp inquiry webhook integration'
+                ],
+                tags: ['React.js', 'Node.js', 'Express', 'Framer Motion', 'REST APIs', 'SEO'],
+                liveUrl: 'https://indoreairportcabbooking.com/',
+                codeUrl: 'https://github.com/Zee4451'
+            },
+            'avnistick-waltzer': {
+                title: 'Avnistick & Waltzer',
+                subtitle: 'MERN E-commerce Platforms',
+                status: 'E-COMMERCE',
+                category: '● MULTI-STORE',
+                url: 'https://theavnistick.com/',
+                description: 'Full-featured online retail stores featuring unified inventory management, automated payment verification, customer order tracking, and multi-vendor product catalogues.',
+                highlights: [
+                    'Seamless Razorpay checkout & webhook verification workflow',
+                    'Automated logistics tracking with Shiprocket API integration',
+                    'High-performance MongoDB aggregation pipelines for catalogue filtering',
+                    'Mobile-first responsive cart & express checkout state management'
+                ],
+                tags: ['React.js', 'Node.js', 'MongoDB', 'Razorpay', 'Shiprocket', 'Tailwind'],
+                liveUrl: 'https://theavnistick.com/',
+                codeUrl: 'https://github.com/Zee4451'
+            },
+            'the-tradification': {
+                title: 'The Tradification',
+                subtitle: 'Ed-Tech & Trading Academy Platform',
+                status: 'ED-TECH / COURSE',
+                category: '● PAYMENTS',
+                url: 'https://thetradification.com/',
+                description: 'Scalable educational platform offering stock market, options, and trading mentorship programs. Features gated content access, student registration pipelines, and secure transaction verification.',
+                highlights: [
+                    'Integrated payment checkout with automated receipt generation',
+                    'Secure user authentication and enrolled student dashboard',
+                    'Rich video lesson embedding with anti-piracy protection',
+                    'High-converting landing page with social proof testimonials'
+                ],
+                tags: ['React.js', 'Node.js', 'Payment Gateway', 'Express', 'JWT Auth'],
+                liveUrl: 'https://thetradification.com/',
+                codeUrl: 'https://github.com/Zee4451'
+            },
+            'ground7-suite': {
+                title: 'Ground7 & Client Suite',
+                subtitle: 'Turf Booking & Enterprise NGO Hub',
+                status: 'MERN SUITE',
+                category: '● CLIENT SUITE',
+                url: 'https://github.com/Zee4451/alaukik-official',
+                description: 'A suite of bespoke commercial software solutions including Ground7 (real-time sports turf slot scheduling system) and Alaukik NGO (donation processing and import-export data management tools).',
+                highlights: [
+                    'Conflict-free real-time calendar slot reservation engine',
+                    'Automated donation receipt dispatch and donor analytics',
+                    'Custom admin dashboard for ground owners to manage daily revenue',
+                    'Export-import compliance documentation generator'
+                ],
+                tags: ['MERN Stack', 'Slot Booking', 'Admin Dashboard', 'Node.js', 'MongoDB'],
+                liveUrl: 'https://github.com/Zee4451/alaukik-official',
+                codeUrl: 'https://github.com/Zee4451/alaukik-official'
+            }
+        };
+
+        const previewModal = document.getElementById('project-preview-modal');
+        const btnClosePreview = document.getElementById('btn-close-preview');
+        const previewTitle = document.getElementById('preview-title');
+        const previewSubtitle = document.getElementById('preview-subtitle');
+        const previewStatus = document.getElementById('preview-badge-status');
+        const previewCategory = document.getElementById('preview-badge-category');
+        const previewMockUrl = document.getElementById('preview-mock-url');
+        const previewDesc = document.getElementById('preview-description');
+        const previewHighlights = document.getElementById('preview-highlights');
+        const previewTechTags = document.getElementById('preview-tech-tags');
+        const previewBtnLive = document.getElementById('preview-btn-live');
+        const previewBtnCode = document.getElementById('preview-btn-code');
+
+        function openProjectPreview(projectId) {
+            const data = projectData[projectId];
+            if (!data) return;
+
+            playClickSound();
+
+            previewTitle.textContent = data.title;
+            previewSubtitle.textContent = data.subtitle;
+            previewStatus.textContent = data.status;
+            previewCategory.textContent = data.category;
+            previewMockUrl.textContent = data.url;
+            previewDesc.textContent = data.description;
+
+            // Highlights
+            previewHighlights.innerHTML = '';
+            data.highlights.forEach(h => {
+                const li = document.createElement('li');
+                li.textContent = h;
+                previewHighlights.appendChild(li);
+            });
+
+            // Tech Tags
+            previewTechTags.innerHTML = '';
+            data.tags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'sticker-label text-[9px] py-0.5 px-1.5';
+                span.textContent = t;
+                previewTechTags.appendChild(span);
+            });
+
+            // Links
+            previewBtnLive.href = data.liveUrl;
+            previewBtnCode.href = data.codeUrl;
+
+            previewModal.classList.remove('hidden');
+        }
+
+        function closeProjectPreview() {
+            if (previewModal) previewModal.classList.add('hidden');
+        }
+
+        document.querySelectorAll('.btn-preview-project').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pid = btn.getAttribute('data-project');
+                openProjectPreview(pid);
+            });
+        });
+
+        if (btnClosePreview) {
+            btnClosePreview.addEventListener('click', () => {
+                playClickSound();
+                closeProjectPreview();
+            });
+        }
+
+        if (previewModal) {
+            previewModal.addEventListener('click', (e) => {
+                if (e.target === previewModal) closeProjectPreview();
+            });
+        }
+
         // Escape key closes modals
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (emailModal && !emailModal.classList.contains('hidden')) closeEmailModal();
                 if (postsModal && !postsModal.classList.contains('hidden')) postsModal.classList.add('hidden');
+                if (previewModal && !previewModal.classList.contains('hidden')) closeProjectPreview();
             }
         });
 
